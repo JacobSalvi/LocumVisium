@@ -1,9 +1,12 @@
 package com.example.stepappv4.ui.Camera;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,9 +16,11 @@ import androidx.camera.core.ImageCapture;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.stepappv4.MainActivity;
 import com.example.stepappv4.R;
 import com.example.stepappv4.databinding.CameraFragmentBinding;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -23,6 +28,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class CameraFragment extends Fragment {
+
+    static private int CAMERA_PERMISSION_CODE = 1888;
 
     private CameraFragmentBinding binding;
     private PreviewView previewView;

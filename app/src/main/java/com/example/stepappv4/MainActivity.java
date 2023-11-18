@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
     private static final int REQUEST_ACTIVITY_RECOGNITION_PERMISSION = 45;
+    static private final int CAMERA_PERMISSION_CODE = 1888;
     private boolean runningOorLater = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
 
     @Override
@@ -85,10 +86,14 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACTIVITY_RECOGNITION},
                     REQUEST_ACTIVITY_RECOGNITION_PERMISSION);
         }
-        else
+
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED)
         {
-            return;
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA},
+                    CAMERA_PERMISSION_CODE);
         }
+
     }
     @Override
     public void onRequestPermissionsResult(int requestCode,  @NonNull String[] permissions, @NonNull int[] grantResults) {
