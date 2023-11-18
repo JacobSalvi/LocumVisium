@@ -17,6 +17,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.mwcproject.databinding.ActivityMapsBinding;
 
@@ -58,6 +59,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         LatLng defaultLocation = manager.getLatLng();
         mMap.addMarker(new MarkerOptions().position(defaultLocation).title("Lugano"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, START_ZOOM));
+
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this.getContext(), R.raw.map_style));
     }
 
     @Override
