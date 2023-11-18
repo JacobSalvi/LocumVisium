@@ -20,6 +20,13 @@
             android:title="@string/camera"
 
             />
+
+        <item
+            android:id="@+id/nav_image_display"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Display"
+
+            />
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/baseline_stacked_bar_chart_24"

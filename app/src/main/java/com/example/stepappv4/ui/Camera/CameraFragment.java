@@ -2,7 +2,6 @@ package com.example.stepappv4.ui.Camera;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -33,7 +32,6 @@ import java.util.concurrent.ExecutionException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.HttpUrl;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -41,11 +39,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import android.util.Base64;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class CameraFragment extends Fragment  {
     private CameraFragmentBinding binding;
@@ -66,8 +61,7 @@ public class CameraFragment extends Fragment  {
                         public void onCaptureSuccess(@NonNull ImageProxy image) {
                             super.onCaptureSuccess(image);
                             System.out.println("image is " + image);
-//                            sendImage(image, view.getContext());
-                            getImage();
+                            sendImage(image, view.getContext());
                         }
 
                         @Override
@@ -82,62 +76,7 @@ public class CameraFragment extends Fragment  {
         return root;
     }
 
-    private void setImageView(Bitmap bitmap){
-        ImageView iv = binding.getRoot().findViewById(R.id.imageView2);
-        iv.setImageBitmap(Bitmap.createScaledBitmap(bitmap, iv.getWidth(), iv.getHeight(), false));
-//        iv.setBackgroundColor(Color.argb(255, 255, 0,0));
-    }
-    public Bitmap StringToBitMap(String encodedString){
-        try {
-            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
 
-    private void getImage(){
-        HttpUrl mySearchUrl = new HttpUrl.Builder()
-                .scheme("http")
-                .host("10.21.17.0")
-                .port(3000)
-                .addPathSegment("location")
-                .addQueryParameter("latitude", "15")
-                .addQueryParameter("longitude", "10.01")
-                .build();
-        Request request = new Request.Builder()
-                .url(mySearchUrl)
-                .method("GET", null)
-                .build();
-
-        OkHttpClient client = new OkHttpClient().newBuilder().build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                System.out.println("Failure");
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                System.out.println("Success");
-                try {
-                    String resString = response.body().string();
-                    JSONObject resBody = new JSONObject(resString);
-                    String encodedImage = (String) resBody.get("file");
-                    Bitmap bitmap = StringToBitMap(encodedImage);
-                    new Handler(Looper.getMainLooper()).post(
-                            () -> setImageView(bitmap)
-                    );
-
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-    }
 
     private void sendImage(ImageProxy image, Context context) {
         OkHttpClient client = new OkHttpClient().newBuilder()
