@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_ACTIVITY_RECOGNITION_PERMISSION = 45;
     static private final int CAMERA_PERMISSION_CODE = 1888;
-    private boolean runningOorLater = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    private final boolean runningOorLater = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_day,
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_camera, R.id.nav_image_display)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);

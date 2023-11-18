@@ -4,16 +4,7 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/footsteps_silhouette_variant_svgrepo_com"
-            android:title="@string/menu_steps" />
-        <item
-            android:id="@+id/nav_day"
-            android:icon="@drawable/baseline_stacked_bar_chart_24"
-            android:title="@string/day"
 
-            />
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
@@ -27,13 +18,6 @@
             android:title="Display"
 
             />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/baseline_stacked_bar_chart_24"
-            android:title="@string/menu_report" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/baseline_person_pin_24"
-            android:title="@string/menu_profile" />
+
     </group>
 </menu>
