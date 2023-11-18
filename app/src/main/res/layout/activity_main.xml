@@ -7,8 +7,16 @@
     tools:context=".MainActivity">
 
 
-    <include layout="@layout/down_button_fragment" />
-    <include layout="@layout/activity_maps"/>
+    <FrameLayout
+        android:id="@+id/fragment_container_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

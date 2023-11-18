@@ -1,4 +1,4 @@
-package com.example.mwcproject.Standalone;
+package com.example.mwcproject.standalone;
 
 import javax.xml.parsers.*;
 import javax.xml.transform.Transformer;
