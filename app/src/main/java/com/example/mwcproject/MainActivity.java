@@ -9,8 +9,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.example.mwcproject.databinding.ActivityMainBinding;
-import com.example.mwcproject.fragments.maps.DownButtons.DownButtonFragment;
-import com.example.mwcproject.fragments.maps.maps.MapsFragment;
+import com.example.mwcproject.fragments.DownButtonFragment;
+import com.example.mwcproject.fragments.MapsFragment;
 import com.example.mwcproject.services.LocationService;
 
 public class MainActivity extends AppCompatActivity {

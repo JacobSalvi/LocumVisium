@@ -9,10 +9,11 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import java.io.*;
+
 public class DrawableImportFix {
 
     public static void main(String[] args) {
-        String rootDirectoryPath = "D:\\Github\\app\\src\\main\\res\\drawable";
+        String rootDirectoryPath = "/Users/msstudiohd/Library/CloudStorage/OneDrive-Personal/Scuola/Master/1 Semester/MWC - Mobile & Werable Computing/Project/app/src/main/res/drawable";
         String replacementColor = "#FFFFFF"; // Replace with your desired color
 
         File rootDirectory = new File(rootDirectoryPath);

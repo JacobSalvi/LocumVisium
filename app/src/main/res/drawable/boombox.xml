@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><vector xmlns:android="http://schemas.android.com/apk/res/android" android:height="16dp" android:viewportHeight="16" android:viewportWidth="16" android:width="16dp">
-  <path android:fillColor="#FFFFFF" android:pathData="M2.5,5a0.5,0.5 0,1 0,0 -1,0.5 0.5,0 0,0 0,1ZM4.5,5a0.5,0.5 0,1 0,0 -1,0.5 0.5,0 0,0 0,1ZM12,4.5a0.5,0.5 0,1 1,-1 0,0.5 0.5,0 0,1 1,0ZM13.5,5a0.5,0.5 0,1 0,0 -1,0.5 0.5,0 0,0 0,1ZM6.5,4a0.5,0.5 0,0 0,0 1h3a0.5,0.5 0,0 0,0 -1h-3ZM12,10.5a0.5,0.5 0,1 1,-1 0,0.5 0.5,0 0,1 1,0Z"/>
-  <path android:fillColor="#FFFFFF" android:pathData="M11.5,13a2.5,2.5 0,1 0,0 -5,2.5 2.5,0 0,0 0,5ZM11.5,12a1.5,1.5 0,1 1,0 -3,1.5 1.5,0 0,1 0,3ZM5,10.5a0.5,0.5 0,1 1,-1 0,0.5 0.5,0 0,1 1,0Z"/>
-  <path android:fillColor="#FFFFFF" android:pathData="M7,10.5a2.5,2.5 0,1 1,-5 0,2.5 2.5,0 0,1 5,0ZM6,10.5a1.5,1.5 0,1 0,-3 0,1.5 1.5,0 0,0 3,0Z"/>
-  <path android:fillColor="#FFFFFF" android:pathData="M14,0a0.5,0.5 0,0 1,0.5 0.5L14.5,2h0.5a1,1 0,0 1,1 1v11a1,1 0,0 1,-1 1L1,15a1,1 0,0 1,-1 -1L0,3a1,1 0,0 1,1 -1h12.5L13.5,0.5A0.5,0.5 0,0 1,14 0ZM1,3v3h14L15,3L1,3ZM15,7L1,7v7h14L15,7Z"/>
-</vector>
