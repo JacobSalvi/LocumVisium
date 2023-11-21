@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.mwcproject.R;
 import com.example.mwcproject.databinding.DownButtonFragmentBinding;
@@ -24,9 +23,7 @@ public class DownButtonFragment extends Fragment {
 
         super.onCreateView(inflater, container, savedInstanceState);
         binding = DownButtonFragmentBinding.inflate(inflater, container, false);
-        System.out.println("ALPACA before");
         binding.cameraBtn.setOnClickListener(view -> {
-                    System.out.println("ALPACA");
                     getParentFragmentManager().beginTransaction()
                             .replace(R.id.fragment_camera, CameraFragment.class, null)
                             .setReorderingAllowed(true)
