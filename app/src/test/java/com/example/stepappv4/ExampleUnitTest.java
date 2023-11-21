@@ -1,4 +1,4 @@
-package com.example.mwcproject;
+package com.example.stepappv4;
 
 import org.junit.Test;
 
