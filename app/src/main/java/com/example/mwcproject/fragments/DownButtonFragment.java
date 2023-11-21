@@ -1,7 +1,6 @@
 package com.example.mwcproject.fragments;
 
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,17 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.LifecycleObserver;
 
 import com.example.mwcproject.R;
-import com.example.mwcproject.databinding.CameraFragmentBinding;
 import com.example.mwcproject.databinding.DownButtonFragmentBinding;
 
 public class DownButtonFragment extends Fragment {
 
-    private FragmentManager fm;
     DownButtonFragmentBinding binding;
 
 

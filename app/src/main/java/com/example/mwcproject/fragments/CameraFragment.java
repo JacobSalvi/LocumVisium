@@ -92,7 +92,7 @@ public class CameraFragment extends Fragment  {
                 .addFormDataPart("latitude", "15")
                 .build();
         Request request = new Request.Builder()
-                .url("http://10.21.17.0:3000/upload")
+                .url("http://10.21.17.20:3000/upload")
                 .method("POST", body)
                 .build();
         try {
