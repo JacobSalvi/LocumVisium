@@ -24,13 +24,11 @@ public class DownButtonFragment extends Fragment {
 
         super.onCreateView(inflater, container, savedInstanceState);
         binding = DownButtonFragmentBinding.inflate(inflater, container, false);
-        System.out.println("ALPACA before");
         binding.cameraBtn.setOnClickListener(view -> {
-                    System.out.println("ALPACA");
                     getParentFragmentManager().beginTransaction()
                             .replace(R.id.fragment_camera, CameraFragment.class, null)
-                            .setReorderingAllowed(true)
-                            .addToBackStack(null) // if you want to add it to the back stack
+                            .setReorderingAllowed(false)
+                            .addToBackStack("Camera") // if you want to add it to the back stack
                             .commit();
                 }
         );

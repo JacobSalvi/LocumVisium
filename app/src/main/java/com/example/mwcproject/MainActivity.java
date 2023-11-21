@@ -33,12 +33,10 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container_map, MapsFragment.class, null)
                     .setReorderingAllowed(true)
-                    .addToBackStack(null) // if you want to add it to the back stack
                     .commit();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container_buttons, DownButtonFragment.class, null)
                     .setReorderingAllowed(true)
-                    .addToBackStack(null) // if you want to add it to the back stack
                     .commit();
         }
     }
