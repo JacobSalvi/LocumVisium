@@ -36,14 +36,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
-
-
     private final int START_ZOOM = 15;
     private GoogleMap mMap;
     ActivityMapsBinding binding;
     LocationManager manager;
     private boolean isBound = false;
-
     private Marker userMaker;
     private final ServiceConnection connection = new ServiceConnection() {
 
