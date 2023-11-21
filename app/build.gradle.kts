@@ -1,14 +1,15 @@
 plugins {
     id("com.android.application")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
-    namespace = "com.example.stepappv4"
+    namespace = "com.example.mwcproject"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.stepappv4"
-        minSdk = 26
+        applicationId = "com.example.mwcproject"
+        minSdk = 33
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -19,7 +20,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -32,25 +36,12 @@ android {
 }
 
 dependencies {
-
+    implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation("androidx.navigation:navigation-fragment:2.7.0-alpha01")
-    implementation("androidx.navigation:navigation-ui:2.7.0-alpha01")
-    implementation ("com.github.AnyChart:AnyChart-Android:1.1.5")
-    implementation ("androidx.camera:camera-camera2:1.3.0")
-    implementation ("androidx.camera:camera-lifecycle:1.3.0")
-    implementation ("androidx.camera:camera-view:1.3.0")
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.11.0"))
-
-    // define any required OkHttp artifacts without version
-    implementation("com.squareup.okhttp3:okhttp")
-    implementation("com.squareup.okhttp3:logging-interceptor")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
 }
