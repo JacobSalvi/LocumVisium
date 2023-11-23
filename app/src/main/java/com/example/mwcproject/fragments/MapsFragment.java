@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import com.example.mwcproject.R;
 import com.example.mwcproject.services.LocationManager;
 import com.example.mwcproject.services.LocationService;
+import com.example.mwcproject.utils.LocationInfo;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,6 +33,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.mwcproject.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
@@ -156,5 +161,19 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this.getContext(), R.raw.map_style));
     }
 
+    public void setPointsOnMap(List<LocationInfo> locations) {
+        HashMap<String, String> idToPath = new HashMap<>();
+        for (LocationInfo location : locations) {
+            Marker m = mMap.addMarker(location);
+            assert m != null;
+            idToPath.put(m.getId(), location.getPath());
+        }
+        mMap.setOnMarkerClickListener(marker -> {
+            // TODO do something with the marker
+            String currentMarkingId = marker.getId();
+            System.out.println(idToPath.get(currentMarkingId));
+            return true; // should return false?????
+        });
+    }
 
 }
