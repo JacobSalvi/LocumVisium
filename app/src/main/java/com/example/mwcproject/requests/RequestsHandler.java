@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 
 import com.example.mwcproject.utils.PropertiesHandle;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +42,30 @@ public class RequestsHandler {
             JSONObject resBody = new JSONObject(resString);
             String encodedImage = (String) resBody.get("file");
             return StringToBitMap(encodedImage);
+        } catch (IOException | JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static JSONObject getLocationList(LatLng position, int maxDistance, Context context ) {
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme(PropertiesHandle.getProperty("scheme", context))
+                .host(PropertiesHandle.getProperty("host", context))
+                .port(PropertiesHandle.getPropertyInt("port", context))
+                .addPathSegment("information")
+                .addQueryParameter("latitude", String.valueOf(position.latitude))
+                .addQueryParameter("longitude", String.valueOf(position.longitude))
+                .addQueryParameter("max", String.valueOf(maxDistance))
+                .build();
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                .method("GET", null)
+                .build();
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+        try (Response response = client.newCall(request).execute()) {
+            assert response.body() != null;
+            String resString = response.body().string();
+            return new JSONObject(resString);
         } catch (IOException | JSONException e) {
             throw new RuntimeException(e);
         }
