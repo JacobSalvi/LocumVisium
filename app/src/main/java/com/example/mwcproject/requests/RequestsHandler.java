@@ -3,7 +3,13 @@ package com.example.mwcproject.requests;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Base64;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.camera.core.ImageProxy;
 
 import com.example.mwcproject.utils.PropertiesHandle;
 import com.google.android.gms.maps.model.LatLng;
@@ -11,11 +17,16 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.HttpUrl;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class RequestsHandler {
@@ -47,7 +58,7 @@ public class RequestsHandler {
         }
     }
 
-    public static JSONObject getLocationList(LatLng position, int maxDistance, Context context ) {
+    public static JSONObject getLocationList(LatLng position, int maxDistance, Context context) {
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme(PropertiesHandle.getProperty("scheme", context))
                 .host(PropertiesHandle.getProperty("host", context))
@@ -71,11 +82,64 @@ public class RequestsHandler {
         }
     }
 
-    public static Bitmap StringToBitMap(String encodedString){
+    static public Bitmap getImage(Context context, String lat, String longitude) throws IOException, JSONException {
+        HttpUrl mySearchUrl = new HttpUrl.Builder()
+                .scheme(PropertiesHandle.getProperty("scheme", context))
+                .host(PropertiesHandle.getProperty("host", context))
+                .port(PropertiesHandle.getPropertyInt("port", context))
+                .addPathSegment("location")
+                .addQueryParameter("latitude", lat)
+                .addQueryParameter("longitude", longitude)
+                .build();
+        Request request = new Request.Builder()
+                .url(mySearchUrl)
+                .method("GET", null)
+                .build();
+
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+        Response response = client.newCall(request).execute();
+
+        String resString = response.body().string();
+        JSONObject resBody = new JSONObject(resString);
+        String encodedImage = (String) resBody.get("file");
+        Bitmap bitmap = StringToBitMap(encodedImage);
+        return bitmap;
+    }
+
+    static public void sendImage(Bitmap bitmapImage, String description, Callback callback) {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, os);
+        byte[] bytes = os.toByteArray();
+        String encoded = Base64.encodeToString(bytes, Base64.DEFAULT);
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("picture", encoded)
+                .addFormDataPart("text", description)
+                .addFormDataPart("longitude", "10.01")
+                .addFormDataPart("latitude", "15")
+                .build();
+        HttpUrl postUrl= new HttpUrl.Builder()
+                .scheme("http")
+                .host("10.21.17.19")
+                .port(3000)
+                .addPathSegment("upload")
+                .build();
+        Request request = new Request.Builder()
+                .url(postUrl)
+                .method("POST", body)
+                .build();
+
+       client.newCall(request).enqueue(callback);
+
+    }
+
+    public static Bitmap StringToBitMap(String encodedString) {
         try {
-            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
