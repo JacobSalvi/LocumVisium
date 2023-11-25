@@ -3,15 +3,9 @@ package com.example.mwcproject.requests;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Base64;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.camera.core.ImageProxy;
-
-import com.example.mwcproject.utils.PropertiesHandle;
+import com.example.mwcproject.utils.PropertiesHandler;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
@@ -20,7 +14,6 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.MultipartBody;
@@ -34,9 +27,9 @@ public class RequestsHandler {
     // given a path make a request to get the bitmap for that picture
     public static Bitmap getPicture(String path, Context context) {
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme(PropertiesHandle.getProperty("scheme", context))
-                .host(PropertiesHandle.getProperty("host", context))
-                .port(PropertiesHandle.getPropertyInt("port", context))
+                .scheme(PropertiesHandler.getProperty("scheme", context))
+                .host(PropertiesHandler.getProperty("host", context))
+                .port(PropertiesHandler.getPropertyInt("port", context))
                 .addPathSegment("picture")
                 .addQueryParameter("path", path)
                 .build();
@@ -60,9 +53,9 @@ public class RequestsHandler {
 
     public static JSONObject getLocationList(LatLng position, int maxDistance, Context context) {
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme(PropertiesHandle.getProperty("scheme", context))
-                .host(PropertiesHandle.getProperty("host", context))
-                .port(PropertiesHandle.getPropertyInt("port", context))
+                .scheme(PropertiesHandler.getProperty("scheme", context))
+                .host(PropertiesHandler.getProperty("host", context))
+                .port(PropertiesHandler.getPropertyInt("port", context))
                 .addPathSegment("information")
                 .addQueryParameter("latitude", String.valueOf(position.latitude))
                 .addQueryParameter("longitude", String.valueOf(position.longitude))
@@ -84,9 +77,9 @@ public class RequestsHandler {
 
     static public Bitmap getImage(Context context, String lat, String longitude) throws IOException, JSONException {
         HttpUrl mySearchUrl = new HttpUrl.Builder()
-                .scheme(PropertiesHandle.getProperty("scheme", context))
-                .host(PropertiesHandle.getProperty("host", context))
-                .port(PropertiesHandle.getPropertyInt("port", context))
+                .scheme(PropertiesHandler.getProperty("scheme", context))
+                .host(PropertiesHandler.getProperty("host", context))
+                .port(PropertiesHandler.getPropertyInt("port", context))
                 .addPathSegment("location")
                 .addQueryParameter("latitude", lat)
                 .addQueryParameter("longitude", longitude)
@@ -107,7 +100,8 @@ public class RequestsHandler {
         return bitmap;
     }
 
-    static public void sendImage(Bitmap bitmapImage, String description, Callback callback) {
+    static public void sendImage(Bitmap bitmapImage, String description,
+                                 Callback callback, Context context) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -121,9 +115,9 @@ public class RequestsHandler {
                 .addFormDataPart("latitude", "15")
                 .build();
         HttpUrl postUrl= new HttpUrl.Builder()
-                .scheme("http")
-                .host("10.21.17.19")
-                .port(3000)
+                .scheme(PropertiesHandler.getProperty("scheme", context))
+                .host(PropertiesHandler.getProperty("host", context))
+                .port(PropertiesHandler.getPropertyInt("port", context))
                 .addPathSegment("upload")
                 .build();
         Request request = new Request.Builder()

@@ -1,14 +1,19 @@
 package com.example.mwcproject.utils;
 
 import android.content.Context;
+
+import com.example.mwcproject.R;
+
+import java.io.InputStream;
 import java.util.Properties;
 
-public class PropertiesHandle {
+public class PropertiesHandler {
 
     public static String getProperty(String key, Context context) {
         Properties properties = new Properties();
+        InputStream rawResource = context.getResources().openRawResource(R.raw.config);
         try{
-            properties.load(context.getAssets().open("app.properties"));
+            properties.load(rawResource);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -18,7 +23,8 @@ public class PropertiesHandle {
     public static int getPropertyInt(String key, Context context) {
         Properties properties = new Properties();
         try{
-            properties.load(context.getAssets().open("app.properties"));
+            InputStream rawResource = context.getResources().openRawResource(R.raw.config);
+            properties.load(rawResource);
         }catch(Exception e){
             e.printStackTrace();
         }

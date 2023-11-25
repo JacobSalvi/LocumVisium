@@ -63,7 +63,7 @@ public class PicturePreview extends Fragment {
 
         binding.sendButton.setOnClickListener((view)->{
             String desc = et.getText().toString();
-            RequestsHandler.sendImage(imageBitmap, desc, callback);
+            RequestsHandler.sendImage(imageBitmap, desc, callback, ctx);
             Fragment parent = getParentFragmentManager().findFragmentById(R.id.fragment_camera);
             getParentFragmentManager().beginTransaction().remove(parent).remove(this).commit();
         });
