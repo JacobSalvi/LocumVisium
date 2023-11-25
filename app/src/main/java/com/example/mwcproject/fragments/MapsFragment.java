@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mwcproject.R;
-import com.example.mwcproject.services.LocationService;
+import com.example.mwcproject.services.Localisation.LocationService;
 import com.example.mwcproject.utils.LocationInfo;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,13 +27,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.mwcproject.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.mwcproject.services;
+package com.example.mwcproject.utils;
 
 import android.location.Location;
 

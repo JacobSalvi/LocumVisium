@@ -7,7 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import com.example.mwcproject.services.LocationService;
+import com.example.mwcproject.services.Localisation.LocationService;
 
 public class LocationPermission extends AbstractPermission  {
 
