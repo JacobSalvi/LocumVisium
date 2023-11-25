@@ -20,6 +20,7 @@ import com.example.mwcproject.R;
 import com.example.mwcproject.services.LocationService;
 import com.example.mwcproject.services.LocationSource;
 import com.example.mwcproject.services.LocationUtils;
+import com.example.mwcproject.utils.LocationInfo;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,6 +28,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
+
+import java.util.HashMap;
+import java.util.List;
 
 
 public class Maps2Fragment extends SupportMapFragment implements OnMapReadyCallback, AbstractPermission.PermissionListener {
@@ -129,5 +133,20 @@ public class Maps2Fragment extends SupportMapFragment implements OnMapReadyCallb
         updateLocalisationUI();
     }
 
+
+    public void setPointsOnMap(List<LocationInfo> locations) {
+        HashMap<String, String> idToPath = new HashMap<>();
+        for (LocationInfo location : locations) {
+            Marker m = mMap.addMarker(location);
+            assert m != null;
+            idToPath.put(m.getId(), location.getPath());
+        }
+        mMap.setOnMarkerClickListener(marker -> {
+            // TODO do something with the marker
+            String currentMarkingId = marker.getId();
+            System.out.println(idToPath.get(currentMarkingId));
+            return true; // should return false?????
+        });
+    }
 
 }

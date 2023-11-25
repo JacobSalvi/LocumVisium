@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mwcproject.R;
-import com.example.mwcproject.services.LocationManager;
 import com.example.mwcproject.services.LocationService;
 import com.example.mwcproject.utils.LocationInfo;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,7 +43,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private final int START_ZOOM = 15;
     private GoogleMap mMap;
     ActivityMapsBinding binding;
-    LocationManager manager;
     private boolean isBound = false;
     private Marker userMaker;
     private final ServiceConnection connection = new ServiceConnection() {
@@ -55,7 +53,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         LocationService locationService = binder.getService();
 
         // Assuming you have a method in LocationService to set a callback
-        locationService.setLocationUpdateListener(new LocationService.LocationUpdateListener() {
+        locationService.setLocalisationUpdateListener(new LocationService.LocationUpdateListener() {
             @Override
             public void onLocationChanged(Location location) {
                 updateMapLocation(location);
@@ -113,7 +111,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        manager = LocationManager.getInstance();
         // Inflate the layout for this fragment
         binding = ActivityMapsBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -154,11 +151,16 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         mMap.clear(); // clear all markers
+
+        /*
         LatLng defaultLocation = manager.getLatLng();
         mMap.addMarker(new MarkerOptions().position(defaultLocation).title("Lugano"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, START_ZOOM));
 
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this.getContext(), R.raw.map_style));
+
+
+         */
     }
 
     public void setPointsOnMap(List<LocationInfo> locations) {
