@@ -1,27 +1,22 @@
 package com.example.mwcproject.services;
-
-import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.Looper;
-
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-
+import com.example.mwcproject.Permission.AbstractPermission;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
-public class LocationService extends Service {
+public class LocationService extends Service implements AbstractPermission.PermissionListener {
     private final IBinder binder = new LocalBinder();
     private FusedLocationProviderClient fusedLocationClient;
-    private Location currentLocation;
     private LocationUpdateListener locationUpdateListener;
     private LocationCallback locationCallback;
 
@@ -47,28 +42,38 @@ public class LocationService extends Service {
         void onLocationChanged(Location location);
     }
 
-    public void setLocationUpdateListener(LocationUpdateListener listener) {
+    public void setLocalisationUpdateListener(LocationUpdateListener listener) {
         this.locationUpdateListener = listener;
+    }
+
+    public void clearLocalisationUpdateListern() {
+        locationUpdateListener = null;
     }
 
     private void setupLocationListener() {
         LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(10000); // Update interval
-        locationRequest.setFastestInterval(5000); // Fastest update interval
+        locationRequest.setInterval(5000); // Update interval
+        locationRequest.setFastestInterval(1000); // Fastest update interval
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
+
         locationCallback = new LocationCallback() {
+
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
+                Location currentLocation = locationResult.getLastLocation();
                 for (Location location : locationResult.getLocations()) {
                     if (location.hasAccuracy()) {
                         float accuracy = location.getAccuracy();
-                        if (currentLocation == null || accuracy < currentLocation.getAccuracy()) {
+                        if (accuracy < currentLocation.getAccuracy()) {
                             currentLocation = location;
-                            if (locationUpdateListener != null) {
-                                locationUpdateListener.onLocationChanged(location);
-                            }
                         }
+                    }
+                }
+
+                if (currentLocation != null) {
+                    if (locationUpdateListener != null) {
+                        locationUpdateListener.onLocationChanged(currentLocation);
                     }
                 }
             }
@@ -77,17 +82,9 @@ public class LocationService extends Service {
         startLocationUpdates(locationRequest);
     }
 
+
+    @SuppressLint("MissingPermission")
     private void startLocationUpdates(LocationRequest locationRequest) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
     }
 
@@ -100,6 +97,10 @@ public class LocationService extends Service {
     }
 
 
+    @Override
+    public void onPermissionChange() {
+       setupLocationListener();
+    }
 
 }
 

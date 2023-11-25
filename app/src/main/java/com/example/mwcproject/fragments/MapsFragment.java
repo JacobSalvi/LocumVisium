@@ -1,8 +1,7 @@
 package com.example.mwcproject.fragments;
-
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -14,15 +13,19 @@ import android.graphics.Paint;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import com.example.mwcproject.Permission.AbstractPermission;
+import com.example.mwcproject.Permission.LocationPermission;
 import com.example.mwcproject.R;
-import com.example.mwcproject.services.LocationManager;
 import com.example.mwcproject.services.LocationService;
+import com.example.mwcproject.services.LocationSource;
+import com.example.mwcproject.services.LocationUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -33,27 +36,32 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.mwcproject.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
+import java.util.Objects;
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback {
+public class MapsFragment extends SupportMapFragment implements OnMapReadyCallback, AbstractPermission.PermissionListener {
 
     private final int START_ZOOM = 15;
     private GoogleMap mMap;
     ActivityMapsBinding binding;
-    LocationManager manager;
     private boolean isBound = false;
     private Marker userMaker;
+    LocationPermission permission;
+
+    LocationSource source;
+
     private final ServiceConnection connection = new ServiceConnection() {
 
     @Override
     public void onServiceConnected(ComponentName className, IBinder service) {
+        isBound = true;
         LocationService.LocalBinder binder = (LocationService.LocalBinder) service;
         LocationService locationService = binder.getService();
-
-        // Assuming you have a method in LocationService to set a callback
-        locationService.setLocationUpdateListener(new LocationService.LocationUpdateListener() {
+        source = new LocationSource(locationService);
+        locationService.setLocalisationUpdateListener(new LocationService.LocationUpdateListener() {
             @Override
             public void onLocationChanged(Location location) {
-                updateMapLocation(location);
+                updateMapLocationOnce(location);
+                locationService.clearLocalisationUpdateListern();
             }
         });
     }
@@ -67,9 +75,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onStart() {
         super.onStart();
+        permission = LocationPermission.getInstance(getContext(), (AppCompatActivity) getActivity());
+        permission.AddListener(this);
         // Bind to LocationService
         Intent intent = new Intent(getActivity(), LocationService.class);
         getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+
     }
 
     @Override
@@ -81,26 +92,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    public void updateMapLocationOnce(Location location) {
+        mMap.setLocationSource(source);
+        LatLng userLocation = null;
+        if (location != null) {
+            userLocation = LocationUtils.locationToLatLng(location);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, START_ZOOM));
 
-    public void updateMapLocation(Location location) {
-
-
-
-        System.out.println("Update Location");
-        if (location != null && mMap != null) {
-
-            LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-            System.out.println(userLocation);
-
-            if (userMaker == null) {
-                userMaker = createUserMarker(userLocation);
-            } else {
-                userMaker.setPosition(userLocation);
-            }
-
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 5));
-            //mMap.addMarker(new MarkerOptions().position(userLocation).title("Current Location"));
+        } else  {
+            userLocation = new LatLng(46.003601, 8.953620);
+            mMap.moveCamera(CameraUpdateFactory
+                    .newLatLngZoom(userLocation, START_ZOOM));
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
+        updateLocalisationUI();
     }
 
 
@@ -108,7 +113,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        manager = LocationManager.getInstance();
+
         // Inflate the layout for this fragment
         binding = ActivityMapsBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -149,12 +154,26 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         mMap.clear(); // clear all markers
-        LatLng defaultLocation = manager.getLatLng();
-        mMap.addMarker(new MarkerOptions().position(defaultLocation).title("Lugano"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, START_ZOOM));
-
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this.getContext(), R.raw.map_style));
     }
 
+    private void updateLocalisationUI() {
+        try {
+            if (permission.isEnabled()) {
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            } else {
+                mMap.setMyLocationEnabled(false);
+                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            }
+        } catch (SecurityException e)  {
+            Log.e("Exception: %s", Objects.requireNonNull(e.getMessage()));
+        }
+    }
 
+
+    @Override
+    public void onPermissionChange() {
+        updateLocalisationUI();
+    }
 }

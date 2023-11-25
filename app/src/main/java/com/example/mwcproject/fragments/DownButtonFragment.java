@@ -31,6 +31,9 @@ public class DownButtonFragment extends Fragment {
                             .commit();
                 }
         );
+        binding.mapBtn.setOnClickListener(view -> {
+            getParentFragmentManager().popBackStack();
+        });
         return binding.getRoot().findViewById(R.id.down_bts);
     }
 
