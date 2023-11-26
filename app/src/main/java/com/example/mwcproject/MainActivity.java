@@ -10,7 +10,6 @@ import android.os.Bundle;
 
 import com.example.mwcproject.Permission.LocationPermission;
 import com.example.mwcproject.fragments.DownButtonFragment;
-import com.example.mwcproject.fragments.Maps2Fragment;
 import com.example.mwcproject.fragments.MapsFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         requestCameraPermission();
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container_map, Maps2Fragment.class, null)
+                    .replace(R.id.fragment_container_map, MapsFragment.class, null)
                     .setReorderingAllowed(true)
                     .commit();
             getSupportFragmentManager().beginTransaction()
@@ -36,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
                     .setReorderingAllowed(true)
                     .commit();
         }
+
+        //View googleLogo = findViewById(R.id.fragment_container_map).findViewWithTag("GoogleWatermark");
+        //googleLogo.setVisibility(View.GONE);
     }
 
     private void requestLocationPermissions() {

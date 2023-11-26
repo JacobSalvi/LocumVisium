@@ -1,63 +1,62 @@
 package com.example.mwcproject.fragments;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import com.example.mwcproject.Permission.AbstractPermission;
+import com.example.mwcproject.Permission.LocationPermission;
 import com.example.mwcproject.R;
 import com.example.mwcproject.services.Localisation.LocationService;
+import com.example.mwcproject.services.Localisation.LocationSource;
+import com.example.mwcproject.utils.LocationUtils;
 import com.example.mwcproject.utils.LocationInfo;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.mwcproject.databinding.ActivityMapsBinding;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 import java.util.HashMap;
 import java.util.List;
 
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback {
+public class MapsFragment extends SupportMapFragment implements OnMapReadyCallback, AbstractPermission.PermissionListener {
 
-    private final int START_ZOOM = 15;
+    private static final int START_ZOOM = 15;
     private GoogleMap mMap;
-    ActivityMapsBinding binding;
     private boolean isBound = false;
-    private Marker userMaker;
+    private Marker userMarker;
+    private LocationPermission permission;
+    private LocationSource source;
+
     private final ServiceConnection connection = new ServiceConnection() {
-
-    @Override
-    public void onServiceConnected(ComponentName className, IBinder service) {
-        LocationService.LocalBinder binder = (LocationService.LocalBinder) service;
-        LocationService locationService = binder.getService();
-
-        // Assuming you have a method in LocationService to set a callback
-        locationService.setLocalisationUpdateListener(new LocationService.LocationUpdateListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                updateMapLocation(location);
-            }
-        });
-    }
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            isBound = true;
+            LocationService.LocalBinder binder = (LocationService.LocalBinder) service;
+            LocationService locationService = binder.getService();
+            source = new LocationSource(locationService);
+            locationService.setLocalisationUpdateListener(new LocationService.LocationUpdateListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    updateMapLocationOnce(location);
+                    locationService.clearLocalisationUpdateListern();
+                }
+            });
+        }
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
@@ -68,98 +67,73 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onStart() {
         super.onStart();
-        // Bind to LocationService
-        Intent intent = new Intent(getActivity(), LocationService.class);
-        getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        Context context = getActivity();
+        if (context != null) {
+            permission = LocationPermission.getInstance(context, (AppCompatActivity) getActivity());
+            permission.AddListener(this);
+            // Bind to LocationService
+            Intent intent = new Intent(context, LocationService.class);
+            context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (isBound) {
-            getActivity().unbindService(connection);
+        Context context = getActivity();
+        if (isBound && context != null) {
+            context.unbindService(connection);
             isBound = false;
         }
     }
 
-
-    public void updateMapLocation(Location location) {
-
-
-
-        System.out.println("Update Location");
-        if (location != null && mMap != null) {
-
-            LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-            System.out.println(userLocation);
-
-            if (userMaker == null) {
-                userMaker = createUserMarker(userLocation);
-            } else {
-                userMaker.setPosition(userLocation);
-            }
-
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 5));
-            //mMap.addMarker(new MarkerOptions().position(userLocation).title("Current Location"));
+    public void updateMapLocationOnce(Location location) {
+        LatLng userLocation = location != null ? LocationUtils.locationToLatLng(location)
+                : new LatLng(46.003601, 8.953620);
+        if (mMap != null) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, START_ZOOM));
         }
+        updateLocalisationUI();
     }
-
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        binding = ActivityMapsBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.map);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        if (view != null) {
+            getMapAsync(this);
         }
+        return view;
     }
 
-    private Marker createUserMarker(LatLng position) {
-
-        int height = 100;
-        int width = 100;
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-
-        // Draw a circle
-        Paint paint = new Paint();
-        paint.setColor(Color.BLUE); // Set the color of the marker
-        paint.setStyle(Paint.Style.FILL);
-        canvas.drawCircle(width / 4, height / 4, width / 4, paint);
-
-        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
-
-        return mMap.addMarker(new MarkerOptions()
-                .position(position)
-                .title("Your Location")
-                .icon(bitmapDescriptor));
+    private void updateLocalisationUI() {
+        try {
+            if (permission != null && permission.isEnabled()) {
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            } else {
+                mMap.setMyLocationEnabled(false);
+                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            }
+        } catch (SecurityException e) {
+            Log.e("MapsFragment", "Security Exception: " + e.getMessage());
+        }
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.clear(); // clear all markers
+        mMap.clear();
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.map_style));
 
-        /*
-        LatLng defaultLocation = manager.getLatLng();
-        mMap.addMarker(new MarkerOptions().position(defaultLocation).title("Lugano"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, START_ZOOM));
-
-        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this.getContext(), R.raw.map_style));
-
-
-         */
+        updateLocalisationUI();
     }
+
+    @Override
+    public void onPermissionChange() {
+        updateLocalisationUI();
+    }
+
 
     public void setPointsOnMap(List<LocationInfo> locations) {
         HashMap<String, String> idToPath = new HashMap<>();

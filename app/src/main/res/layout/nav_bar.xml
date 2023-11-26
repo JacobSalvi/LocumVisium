@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/down_bts"
+    android:name="com.example.mwcproject.fragments.maps.DownButtons.DownButtonFragment">
+
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+
+
+        app:backgroundTint="#00E8E8E8"
+        android:alpha="0.8"
+        android:id="@+id/bottomAppBar"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        app:fabCradleMargin="10dp"
+        app:fabAlignmentMode="center"
+        android:contentInsetLeft="0dp"
+        android:contentInsetStart="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        >
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            app:rippleColor="@color/md_theme_dark_onPrimary"
+            android:elevation="10dp"
+            app:backgroundTint="#4865014F"
+            android:id="@+id/bottomNavigationView"
+            app:labelVisibilityMode="unlabeled"
+            app:itemIconTint="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@drawable/background_main"
+            app:menu="@menu/bottom_menu" />
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/bottomAppBar"
+        app:layout_anchorGravity="center|center_horizontal">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+        app:shapeAppearanceOverlay="@style/FloatingActionButton"
+        android:elevation="8dp"
+        app:tint="@android:color/white"
+        app:fabCustomSize="70dp"
+        app:maxImageSize="30dp"
+        app:backgroundTint="@color/md_theme_dark_primary"
+        app:rippleColor="@color/md_theme_dark_onPrimary"
+        android:id="@+id/camera_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/camera_fill"
+        app:layout_anchorGravity="bottom|center" />
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
