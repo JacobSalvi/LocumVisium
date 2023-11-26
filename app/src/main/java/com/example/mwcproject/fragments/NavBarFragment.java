@@ -12,12 +12,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.mwcproject.R;
-import com.example.mwcproject.databinding.NavBarBinding;
+import com.example.mwcproject.databinding.NavBarFragmentBinding;
 
 
-public class DownButtonFragment extends Fragment {
+public class NavBarFragment extends Fragment {
 
-    NavBarBinding binding;
+    NavBarFragmentBinding binding;
 
 
     @Nullable
@@ -25,7 +25,7 @@ public class DownButtonFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         super.onCreateView(inflater, container, savedInstanceState);
-        binding = NavBarBinding.inflate(inflater, container, false);
+        binding = NavBarFragmentBinding.inflate(inflater, container, false);
         binding.cameraBtn.setOnClickListener(view -> {
                     getParentFragmentManager().beginTransaction()
                             .replace(R.id.fragment_camera, CameraFragment.class, null)
@@ -51,7 +51,7 @@ public class DownButtonFragment extends Fragment {
 
 
 
-    public DownButtonFragment() {
+    public NavBarFragment() {
        // super(R.layout.down_button_fragment);
     }
 

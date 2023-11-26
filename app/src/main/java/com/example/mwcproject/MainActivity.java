@@ -9,7 +9,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.example.mwcproject.Permission.LocationPermission;
-import com.example.mwcproject.fragments.DownButtonFragment;
+import com.example.mwcproject.fragments.NavBarFragment;
 import com.example.mwcproject.fragments.MapsFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                     .setReorderingAllowed(true)
                     .commit();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container_buttons, DownButtonFragment.class, null)
+                    .replace(R.id.fragment_container_buttons, NavBarFragment.class, null)
                     .setReorderingAllowed(true)
                     .commit();
         }
