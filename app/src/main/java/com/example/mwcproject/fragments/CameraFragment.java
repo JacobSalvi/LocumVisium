@@ -41,41 +41,51 @@ public class CameraFragment extends Fragment  {
         View root = binding.getRoot();
         previewView = root.findViewById(R.id.previewView);
         CameraFragment a = this;
+        ImageCapture.OnImageCapturedCallback cb = captureCallback();
         binding.captureButton.setOnClickListener((view) -> {
+            long startTime = System.nanoTime();
             binding.captureButton.setEnabled(false);
-            imageCapture.takePicture(ContextCompat.getMainExecutor(this.getContext()),
-                    new ImageCapture.OnImageCapturedCallback() {
-                        @Override
-                        public void onCaptureSuccess(@NonNull ImageProxy image) {
-                            super.onCaptureSuccess(image);
-                            System.out.println("image is " + image);
-                            // image to string
-                            ByteArrayOutputStream os = new ByteArrayOutputStream();
-                            image.toBitmap().compress(Bitmap.CompressFormat.PNG, 100, os);
-                            byte[] bytes = os.toByteArray();
-                            String encoded = Base64.encodeToString(bytes, Base64.DEFAULT);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("image", encoded);
-                            getParentFragmentManager().beginTransaction()
-                                    .replace(R.id.picture_description, PicturePreview.class, bundle)
-                                    .setReorderingAllowed(true)
-                                    .commit();
-                        }
-
-                        @Override
-                        public void onError(@NonNull ImageCaptureException error) {
-                            System.out.println("error is " + error);
-                        }
-                    });
+            imageCapture.takePicture(ContextCompat.getMainExecutor(this.getContext()),cb);
+            long endTime = System.nanoTime();
+            System.out.println("Execution took:"+(endTime-startTime)/1000000);
         });
         return root;
+    }
+
+    private ImageCapture.OnImageCapturedCallback captureCallback(){
+        return new ImageCapture.OnImageCapturedCallback() {
+            @Override
+            public void onCaptureSuccess(@NonNull ImageProxy image) {
+                super.onCaptureSuccess(image);
+                long startTime = System.nanoTime();
+                System.out.println("image is " + image);
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                image.toBitmap().compress(Bitmap.CompressFormat.JPEG, 100, os);
+                System.out.println("Compression took:"+(System.nanoTime()-startTime)/1000000);
+                byte[] bytes = os.toByteArray();
+                String encoded = Base64.encodeToString(bytes, Base64.DEFAULT);
+                Bundle bundle = new Bundle();
+                bundle.putString("image", encoded);
+                bundle.putString("alpaca", image.toString());
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.picture_description, PicturePreview.class, bundle)
+                        .setReorderingAllowed(true)
+                        .commit();
+                long endTime = System.nanoTime();
+                System.out.println("OnCaptureSuccess took:"+(endTime-startTime)/1000000);
+            }
+
+            @Override
+            public void onError(@NonNull ImageCaptureException error) {
+                System.out.println("error is " + error);
+            }
+        };
     }
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         this.startCamera();
-
     }
 
     private void startCamera(){
