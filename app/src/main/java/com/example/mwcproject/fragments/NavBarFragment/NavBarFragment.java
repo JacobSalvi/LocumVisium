@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.mwcproject.R;
 import com.example.mwcproject.databinding.NavBarFragmentBinding;
+import com.example.mwcproject.fragments.NavBarFragment.CameraButton.CameraButtonFragment;
 
 
 public class NavBarFragment extends Fragment {
