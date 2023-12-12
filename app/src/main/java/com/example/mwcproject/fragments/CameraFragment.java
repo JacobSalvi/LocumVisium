@@ -1,5 +1,6 @@
 package com.example.mwcproject.fragments;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +21,8 @@ import androidx.fragment.app.Fragment;
 
 
 import com.example.mwcproject.R;
-import com.example.mwcproject.databinding.CameraFragmentBinding;;
+import com.example.mwcproject.databinding.CameraFragmentBinding;
+import com.example.mwcproject.fragments.NavBarFragment.CameraButton.CameraButtonFragment;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.ByteArrayOutputStream;
@@ -40,14 +42,11 @@ public class CameraFragment extends Fragment  {
         binding = CameraFragmentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         previewView = root.findViewById(R.id.previewView);
-        CameraFragment a = this;
         ImageCapture.OnImageCapturedCallback cb = captureCallback();
-        binding.captureButton.setOnClickListener((view) -> {
-            long startTime = System.nanoTime();
-            binding.captureButton.setEnabled(false);
-            imageCapture.takePicture(ContextCompat.getMainExecutor(this.getContext()),cb);
-            long endTime = System.nanoTime();
-            System.out.println("Execution took:"+(endTime-startTime)/1000000);
+        Context ctx = this.getContext();
+        CameraButtonFragment.setCameraBtnCallback(() -> {
+            System.out.println("Alpaca");
+            imageCapture.takePicture(ContextCompat.getMainExecutor(ctx),cb);
         });
         return root;
     }
@@ -118,6 +117,7 @@ public class CameraFragment extends Fragment  {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        CameraButtonFragment.setCameraBtnCallback(null);
         binding = null;
     }
 
