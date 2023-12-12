@@ -102,7 +102,9 @@ public class RequestsHandler {
         return bitmap;
     }
 
-    static public void sendImage(Bitmap bitmapImage, String description,
+    static public void sendImage(Bitmap bitmapImage,
+                                 String title,
+                                 String description,
                                  List<String> tags,
                                  Callback callback, Context context) {
         OkHttpClient client = new OkHttpClient().newBuilder()
@@ -113,6 +115,7 @@ public class RequestsHandler {
         String encoded = Base64.encodeToString(bytes, Base64.DEFAULT);
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("picture", encoded)
+                .addFormDataPart("title", title)
                 .addFormDataPart("text", description)
                 .addFormDataPart("longitude", "10.01")
                 .addFormDataPart("latitude", "15")

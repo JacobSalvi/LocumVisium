@@ -1,6 +1,7 @@
 package com.example.mwcproject.fragments;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -11,11 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,35 +40,15 @@ public class PicturePreview extends Fragment {
 
     private PicturePreviewFragmentBinding binding;
     private Bitmap imageBitmap;
+
+    private List<String> chosenTags= new ArrayList<>();
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = PicturePreviewFragmentBinding.inflate(inflater, container, false);
         TextInputEditText et = binding.getRoot().findViewById(R.id.description);
 
-        HorizontalScrollView tagsContainer = binding.getRoot().findViewById(R.id.tagsContainer);
-        LinearLayout ll = new LinearLayout(this.getContext());
-        tagsContainer.addView(ll);
-
-        List<String> availableTags = Arrays.asList("Bar", "Restaurant", "Event", "CozyPlace","Park");
-        ArrayList<String> tags = new ArrayList<>();
-
-        TextInputEditText inputTitle = binding.getRoot().findViewById(R.id.titleInput);
-
-        for(String availableTag:  availableTags){
-            Button b = new Button(this.getContext());
-            b.setOnClickListener((view)->{
-                if(!tags.contains(availableTag)){
-                    tags.add(availableTag);
-                    view.setBackgroundColor(Color.BLUE);
-                }else{
-                    tags.remove(availableTag);
-                    view.setBackgroundColor(Color.GRAY);
-                }
-            });
-            b.setText(availableTag);
-            ll.addView(b);
-        }
+        createTags();
 
         Context ctx = getContext();
         Callback callback = new Callback() {
@@ -94,11 +73,11 @@ public class PicturePreview extends Fragment {
             }
         };
 
+        TextInputEditText inputTitle = binding.getRoot().findViewById(R.id.titleInput);
         binding.sendButton.setOnClickListener((view)->{
             String desc = et.getText().toString();
             String title = inputTitle.getText().toString();
-            System.out.println(title);
-            RequestsHandler.sendImage(imageBitmap, desc, tags ,callback, ctx);
+            RequestsHandler.sendImage(imageBitmap, title, desc, chosenTags ,callback, ctx);
             Fragment parent = getParentFragmentManager().findFragmentById(R.id.fragment_camera);
             getParentFragmentManager().beginTransaction().remove(parent).remove(this).commit();
         });
@@ -107,7 +86,27 @@ public class PicturePreview extends Fragment {
         return binding.getRoot();
     }
 
+    private void createTags(){HorizontalScrollView tagsContainer = binding.getRoot().findViewById(R.id.tagsContainer);
+        LinearLayout ll = new LinearLayout(this.getContext());
+        tagsContainer.addView(ll);
 
+        List<String> availableTags = Arrays.asList("Bar", "Restaurant", "Event", "CozyPlace","Park");
+
+        for(String availableTag:  availableTags){
+            Button b = new Button(this.getContext());
+            b.setOnClickListener((view)->{
+                if(!chosenTags.contains(availableTag)){
+                    chosenTags.add(availableTag);
+                    b.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
+                }else{
+                    chosenTags.remove(availableTag);
+                    b.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+                }
+            });
+            b.setText(availableTag);
+            ll.addView(b);
+        }
+    }
 
     public Bitmap StringToBitMap(String encodedString){
         try {

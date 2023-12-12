@@ -27,6 +27,7 @@
                 app:layout_constraintVertical_bias="0.84000003">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:textColor="@color/md_theme_light_onPrimary"
                     android:id="@+id/description"
                     android:layout_width="263dp"
                     android:layout_height="108dp"
@@ -51,6 +52,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:textColor="@color/md_theme_light_onPrimary"
                     android:id="@+id/titleInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
