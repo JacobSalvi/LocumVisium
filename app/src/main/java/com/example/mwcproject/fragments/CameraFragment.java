@@ -66,7 +66,6 @@ public class CameraFragment extends Fragment  {
                 String encoded = Base64.encodeToString(bytes, Base64.DEFAULT);
                 Bundle bundle = new Bundle();
                 bundle.putString("image", encoded);
-                bundle.putString("alpaca", image.toString());
                 getParentFragmentManager().beginTransaction()
                         .replace(R.id.picture_description, PicturePreview.class, bundle)
                         .setReorderingAllowed(true)
