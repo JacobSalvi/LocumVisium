@@ -2,9 +2,9 @@ package com.example.mwcproject.utils;
 
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class LocationInfo extends MarkerOptions {
+public class LocationMarker extends MarkerOptions {
     private String path;
-   public LocationInfo() {
+   public LocationMarker() {
        super();
    }
 

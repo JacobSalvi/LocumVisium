@@ -19,8 +19,9 @@ import com.example.mwcproject.Permission.LocationPermission;
 import com.example.mwcproject.R;
 import com.example.mwcproject.services.Localisation.LocationService;
 import com.example.mwcproject.services.Localisation.LocationSource;
+import com.example.mwcproject.utils.LocationMarkerMockData;
 import com.example.mwcproject.utils.LocationUtils;
-import com.example.mwcproject.utils.LocationInfo;
+import com.example.mwcproject.utils.LocationMarker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,10 +37,13 @@ import java.util.List;
 public class MapsFragment extends SupportMapFragment implements OnMapReadyCallback, AbstractPermission.PermissionListener {
 
     private static final int START_ZOOM = 15;
+    private static final float Y_OFFSET_MARKER = 0.005f;
     private GoogleMap mMap;
     private boolean isBound = false;
     private Marker userMarker;
     private LocationPermission permission;
+
+
     private LocationSource source;
 
     private final ServiceConnection connection = new ServiceConnection() {
@@ -125,7 +129,8 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
         mMap = googleMap;
         mMap.clear();
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.map_style));
-
+        LocationMarkerMockData mock = new LocationMarkerMockData();
+        setPointsOnMap(mock.markers);
         updateLocalisationUI();
     }
 
@@ -135,19 +140,26 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
     }
 
 
-    public void setPointsOnMap(List<LocationInfo> locations) {
+    public void setPointsOnMap(List<LocationMarker> locations) {
         HashMap<String, String> idToPath = new HashMap<>();
-        for (LocationInfo location : locations) {
+        for (LocationMarker location : locations) {
             Marker m = mMap.addMarker(location);
             assert m != null;
             idToPath.put(m.getId(), location.getPath());
+
+            mMap.setOnMarkerClickListener(marker -> {
+                mMap.animateCamera(CameraUpdateFactory.
+                        newLatLngZoom(getMakerLocationsWithOffset(marker.getPosition()), START_ZOOM));
+                String currentMarkingId = marker.getId();
+                System.out.println(idToPath.get(currentMarkingId));
+                return true; // should return false?????
+            });
         }
-        mMap.setOnMarkerClickListener(marker -> {
-            // TODO do something with the marker
-            String currentMarkingId = marker.getId();
-            System.out.println(idToPath.get(currentMarkingId));
-            return true; // should return false?????
-        });
+    }
+
+
+    private LatLng getMakerLocationsWithOffset(LatLng markerLocation) {
+        return  new LatLng(markerLocation.latitude - Y_OFFSET_MARKER, markerLocation.longitude);
     }
 
 }

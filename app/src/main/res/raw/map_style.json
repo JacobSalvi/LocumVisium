@@ -37,6 +37,15 @@
   },
   {
     "featureType": "poi",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
     "elementType": "labels.text.fill",
     "stylers": [
       {
@@ -49,6 +58,7 @@
     "elementType": "geometry",
     "stylers": [
       {
+
         "color": "#263c3f"
       }
     ]

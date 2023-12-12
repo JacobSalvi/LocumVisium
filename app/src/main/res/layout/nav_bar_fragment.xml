@@ -8,15 +8,12 @@
     android:id="@+id/down_bts"
     android:name="com.example.mwcproject.fragments.maps.DownButtons.DownButtonFragment">
 
-
     <com.google.android.material.bottomappbar.BottomAppBar
-
-
         app:backgroundTint="#00E8E8E8"
         android:alpha="0.8"
         android:id="@+id/bottomAppBar"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
         android:layout_gravity="bottom"
         app:fabCradleMargin="10dp"
         app:fabAlignmentMode="center"
@@ -27,12 +24,12 @@
         >
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
+            app:itemIconTint="@drawable/bottom_navigation_selector"
             app:rippleColor="@color/md_theme_dark_onPrimary"
             android:elevation="10dp"
             app:backgroundTint="#4865014F"
             android:id="@+id/bottomNavigationView"
             app:labelVisibilityMode="unlabeled"
-            app:itemIconTint="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="0dp"
@@ -52,21 +49,19 @@
         app:layout_anchor="@id/bottomAppBar"
         app:layout_anchorGravity="center|center_horizontal">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
 
-        app:shapeAppearanceOverlay="@style/FloatingActionButton"
-        android:elevation="8dp"
-        app:tint="@android:color/white"
-        app:fabCustomSize="70dp"
-        app:maxImageSize="30dp"
-        app:backgroundTint="@color/md_theme_dark_primary"
-        app:rippleColor="@color/md_theme_dark_onPrimary"
-        android:id="@+id/camera_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/camera_fill"
-        app:layout_anchorGravity="bottom|center" />
+        <FrameLayout
+            android:id="@+id/fragment_container_camera_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!--
+        <include
+            android:id="@+id/FAB_cam_btn"
+            layout="@layout/camera_button_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        -->
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
