@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.example.mwcproject.Permission.AbstractPermission;
 import com.example.mwcproject.Permission.LocationPermission;
 import com.example.mwcproject.R;
+import com.example.mwcproject.fragments.NavBarFragment.NavBarFragment;
 import com.example.mwcproject.services.Localisation.LocationService;
 import com.example.mwcproject.services.Localisation.LocationSource;
 import com.example.mwcproject.utils.LocationMarkerMockData;
@@ -37,7 +38,7 @@ import java.util.List;
 public class MapsFragment extends SupportMapFragment implements OnMapReadyCallback, AbstractPermission.PermissionListener {
 
     private static final int START_ZOOM = 15;
-    private static final float Y_OFFSET_MARKER = 0.005f;
+    private static final float Y_OFFSET_MARKER = 0.006f;
     private GoogleMap mMap;
     private boolean isBound = false;
     private Marker userMarker;
@@ -146,17 +147,26 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
             Marker m = mMap.addMarker(location);
             assert m != null;
             idToPath.put(m.getId(), location.getPath());
-
-            mMap.setOnMarkerClickListener(marker -> {
-                mMap.animateCamera(CameraUpdateFactory.
-                        newLatLngZoom(getMakerLocationsWithOffset(marker.getPosition()), START_ZOOM));
-                String currentMarkingId = marker.getId();
-                System.out.println(idToPath.get(currentMarkingId));
-                return true; // should return false?????
-            });
         }
+
+        mMap.setOnMarkerClickListener(marker -> {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(getMakerLocationsWithOffset(marker.getPosition()), START_ZOOM));
+
+            Bundle args = new Bundle();
+            args.putString("ID", marker.getTitle()); // Use the marker ID to get the path
+
+            // Create a new instance of the fragment with the arguments
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_location_popup, LocationPopupFragment.class, args)
+                    .addToBackStack("Position photo")
+                    .setReorderingAllowed(true)
+                    .commit();
+
+            return true; // or return false if you want the default behavior as well
+        });
     }
 
+    private float offsetFromZoomLevel;
 
     private LatLng getMakerLocationsWithOffset(LatLng markerLocation) {
         return  new LatLng(markerLocation.latitude - Y_OFFSET_MARKER, markerLocation.longitude);

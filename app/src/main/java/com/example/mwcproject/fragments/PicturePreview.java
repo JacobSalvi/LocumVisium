@@ -50,7 +50,6 @@ public class PicturePreview extends Fragment {
             public void onResponse(@NonNull Call call, @NonNull Response response) {
                 System.out.println("Success");
                 int response_code = response.code();
-
                 Looper.prepare();
                 if (response_code != 200) {
                     Toast.makeText(ctx, "The server encountered an error, couldn't upload the image.", Toast.LENGTH_SHORT).show();

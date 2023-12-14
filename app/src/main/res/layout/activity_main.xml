@@ -6,8 +6,6 @@
     android:layout_width="match_parent"
     tools:context=".MainActivity">
 
-
-
     <FrameLayout
         android:id="@+id/fragment_container_map"
         android:layout_width="match_parent"
@@ -28,6 +26,11 @@
         android:id="@+id/fragment_container_buttons"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/fragment_location_popup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
 
