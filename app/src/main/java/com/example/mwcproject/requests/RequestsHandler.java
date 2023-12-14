@@ -8,11 +8,13 @@ import android.util.Base64;
 import com.example.mwcproject.utils.PropertiesHandler;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -100,7 +102,10 @@ public class RequestsHandler {
         return bitmap;
     }
 
-    static public void sendImage(Bitmap bitmapImage, String description,
+    static public void sendImage(Bitmap bitmapImage,
+                                 String title,
+                                 String description,
+                                 List<String> tags,
                                  Callback callback, Context context) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
@@ -110,9 +115,11 @@ public class RequestsHandler {
         String encoded = Base64.encodeToString(bytes, Base64.DEFAULT);
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("picture", encoded)
-                .addFormDataPart("text", description)
+                .addFormDataPart("title", title)
+                .addFormDataPart("descriptionc", description)
                 .addFormDataPart("longitude", "10.01")
                 .addFormDataPart("latitude", "15")
+                .addFormDataPart("tags", new JSONArray(tags).toString())
                 .build();
         HttpUrl postUrl= new HttpUrl.Builder()
                 .scheme(PropertiesHandler.getProperty("scheme", context))

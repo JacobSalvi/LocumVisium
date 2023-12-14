@@ -14,8 +14,7 @@ import com.example.mwcproject.databinding.CameraButtonFragmentBinding;
 import com.example.mwcproject.fragments.CameraFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 public class CameraButtonFragment extends Fragment {
 
@@ -27,7 +26,7 @@ public class CameraButtonFragment extends Fragment {
     FloatingActionButton camButton;
 
 
-    public List<CameraButtonListener> buttonListeners;
+    public Optional<CameraButtonListener> buttonListener = Optional.empty();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -41,24 +40,28 @@ public class CameraButtonFragment extends Fragment {
 
         camButton = binding.getRoot().findViewById(R.id.camera_btn);
         binding.cameraBtn.setOnClickListener(view -> {
-                    buttonListeners.forEach(CameraButtonListener::OnButtonClick);
+                    buttonListener.ifPresent(CameraButtonListener::OnButtonClick);
+                    if(!buttonListener.isPresent()){
                     getParentFragmentManager().beginTransaction()
                             .replace(R.id.fragment_camera, CameraFragment.class, null)
                             .setReorderingAllowed(false)
                             .addToBackStack("Camera") // if you want to add it to the back stack
                             .commit();
                     OnChangeButton();
+                    }
                 }
         );
         instance = this;
-        buttonListeners = new ArrayList<>();
         return binding.getRoot();
     }
 
 
-    public static void AddToList(CameraButtonListener itself) {
-        instance.buttonListeners = new ArrayList<>();
-        instance.buttonListeners.add(itself);
+    public static void setCameraBtnCallback(CameraButtonListener itself) {
+        if(itself==null){
+            instance.buttonListener = Optional.empty();
+        }else{
+            instance.buttonListener = Optional.of(itself);
+        }
     }
 
     private void OnChangeButton() {
