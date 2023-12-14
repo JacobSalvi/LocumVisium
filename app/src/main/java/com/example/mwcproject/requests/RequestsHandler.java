@@ -116,7 +116,7 @@ public class RequestsHandler {
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("picture", encoded)
                 .addFormDataPart("title", title)
-                .addFormDataPart("descriptionc", description)
+                .addFormDataPart("description", description)
                 .addFormDataPart("longitude", "10.01")
                 .addFormDataPart("latitude", "15")
                 .addFormDataPart("tags", new JSONArray(tags).toString())
