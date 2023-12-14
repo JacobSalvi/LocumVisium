@@ -106,7 +106,12 @@ public class RequestsHandler {
                                  String title,
                                  String description,
                                  List<String> tags,
-                                 Callback callback, Context context) {
+                                 double longitude,
+                                 double latitude,
+                                 String provider,
+                                 Callback callback,
+                                 Context context
+    ) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -117,9 +122,10 @@ public class RequestsHandler {
                 .addFormDataPart("picture", encoded)
                 .addFormDataPart("title", title)
                 .addFormDataPart("description", description)
-                .addFormDataPart("longitude", "10.01")
-                .addFormDataPart("latitude", "15")
+                .addFormDataPart("longitude", String.valueOf(longitude))
+                .addFormDataPart("latitude", String.valueOf(latitude))
                 .addFormDataPart("tags", new JSONArray(tags).toString())
+                .addFormDataPart("provider", provider)
                 .build();
         HttpUrl postUrl= new HttpUrl.Builder()
                 .scheme(PropertiesHandler.getProperty("scheme", context))

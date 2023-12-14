@@ -44,9 +44,7 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
     private static final int RANGE = 200;
     private GoogleMap mMap;
     private boolean isBound = false;
-    private Marker userMarker;
     private LocationPermission permission;
-
 
     private LocationSource source;
 
@@ -112,6 +110,7 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
             getMapAsync(this);
         }
         return view;
+
     }
 
     private void updateLocalisationUI() {

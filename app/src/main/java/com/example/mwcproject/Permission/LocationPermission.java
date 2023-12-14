@@ -62,9 +62,6 @@ public class LocationPermission extends AbstractPermission  {
     private void startLocationService() {
         Intent serviceIntent = new Intent(context, LocationService.class);
         context.startService(serviceIntent);
-
-
-
     }
 
 }
