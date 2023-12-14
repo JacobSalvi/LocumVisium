@@ -1,8 +1,8 @@
 package com.example.mwcproject.fragments;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import com.example.mwcproject.Permission.AbstractPermission;
 import com.example.mwcproject.Permission.LocationPermission;
 import com.example.mwcproject.R;
-import com.example.mwcproject.fragments.NavBarFragment.NavBarFragment;
+import com.example.mwcproject.requests.RequestsHandler;
 import com.example.mwcproject.services.Localisation.LocationService;
 import com.example.mwcproject.services.Localisation.LocationSource;
 import com.example.mwcproject.utils.LocationMarkerMockData;
@@ -31,6 +31,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
 
     private static final int START_ZOOM = 15;
     private static final float Y_OFFSET_MARKER = 0.006f;
+    private static final int RANGE = 200;
     private GoogleMap mMap;
     private boolean isBound = false;
     private Marker userMarker;
@@ -134,6 +137,12 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
         setPointsOnMap(mock.markers);
         updateLocalisationUI();
     }
+
+    public void GetLocations(LatLng position) {
+       JSONObject object = RequestsHandler.getLocationList(position, RANGE, this.getContext());
+       System.out.println(object);
+    }
+
 
     @Override
     public void onPermissionChange() {
