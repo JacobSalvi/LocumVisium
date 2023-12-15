@@ -42,12 +42,13 @@ public class CameraButtonFragment extends Fragment {
         binding.cameraBtn.setOnClickListener(view -> {
                     buttonListener.ifPresent(CameraButtonListener::OnButtonClick);
                     if(!buttonListener.isPresent()){
-                    getParentFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_camera, CameraFragment.class, null)
-                            .setReorderingAllowed(false)
-                            .addToBackStack("Camera") // if you want to add it to the back stack
-                            .commit();
-                    OnChangeButton();
+                        getParentFragmentManager().popBackStack();
+                        getParentFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_camera, CameraFragment.class, null)
+                                .setReorderingAllowed(false)
+                                .addToBackStack("Camera") // if you want to add it to the back stack
+                                .commit();
+                        OnChangeButton();
                     }
                 }
         );

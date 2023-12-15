@@ -32,7 +32,7 @@ public class NavBarFragment extends Fragment {
              if (item.getItemId() == R.id.map_btn) {
                  getParentFragmentManager().popBackStack();
              }else if(item.getItemId() == R.id.scroll_feed_btn){
-                 System.out.println("Alpaca");
+                 getParentFragmentManager().popBackStack();
                  getParentFragmentManager().beginTransaction()
                          .replace(R.id.scroll_feed, ScrollFeed.class, null)
                          .setReorderingAllowed(false)
