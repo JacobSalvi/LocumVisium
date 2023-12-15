@@ -61,6 +61,7 @@ dependencies {
     implementation ("androidx.camera:camera-lifecycle:1.3.0")
     implementation ("androidx.camera:camera-view:1.3.0")
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.11.0"))
+    implementation("androidx.cardview:cardview:1.0.0")
 
     implementation ("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
     implementation ("androidx.compose.material3:material3:1.1.2")

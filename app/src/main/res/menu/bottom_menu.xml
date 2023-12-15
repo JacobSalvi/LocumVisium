@@ -4,7 +4,7 @@
     <item
 
         android:state_checked="true" android:color="@color/md_theme_dark_onPrimaryContainer"
-        android:id="@+id/list_btn"
+        android:id="@+id/scroll_feed_btn"
         android:title=""
         android:icon="@drawable/map_fill"/>
 
