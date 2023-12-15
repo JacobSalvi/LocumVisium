@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ImageView;
 
@@ -17,8 +16,6 @@ import com.example.mwcproject.R;
 import com.example.mwcproject.databinding.PostFragmentBinding;
 import com.example.mwcproject.requests.RequestsHandler;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class PostFragment extends Fragment {
     private PostFragmentBinding binding;
