@@ -1,4 +1,4 @@
-package com.example.mwcproject.fragments;
+package com.example.mwcproject.fragments.Map;
 
 
 import androidx.annotation.NonNull;
@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.example.mwcproject.Permission.AbstractPermission;
 import com.example.mwcproject.Permission.LocationPermission;
 import com.example.mwcproject.R;
+import com.example.mwcproject.fragments.LocationPopupFragment;
 import com.example.mwcproject.requests.RequestsHandler;
 import com.example.mwcproject.services.Localisation.LocationService;
 import com.example.mwcproject.services.Localisation.LocationSource;
@@ -37,15 +38,16 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class MapsFragment extends SupportMapFragment implements OnMapReadyCallback, AbstractPermission.PermissionListener {
+public class MapsFragment extends SupportMapFragment
+        implements OnMapReadyCallback, AbstractPermission.PermissionListener {
 
     private static final int START_ZOOM = 15;
     private static final float Y_OFFSET_MARKER = 0.006f;
-    private static final int RANGE = 200;
     private GoogleMap mMap;
     private boolean isBound = false;
     private LocationPermission permission;
 
+    private MapMarkers mapMarkers;
     private LocationSource source;
 
     private final ServiceConnection connection = new ServiceConnection() {
@@ -54,7 +56,6 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
             isBound = true;
             LocationService.LocalBinder binder = (LocationService.LocalBinder) service;
             LocationService locationService = binder.getService();
-            source = new LocationSource(locationService);
             locationService.setLocalisationUpdateListener(new LocationService.LocationUpdateListener() {
                 @Override
                 public void onLocationChanged(Location location) {
@@ -93,11 +94,15 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
         }
     }
 
+
+
     public void updateMapLocationOnce(Location location) {
         LatLng userLocation = location != null ? LocationUtils.locationToLatLng(location)
                 : new LatLng(46.003601, 8.953620);
         if (mMap != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, START_ZOOM));
+            mapMarkers = new MapMarkers(mMap, this.getContext(), this.getParentFragmentManager(), userLocation);
+            //MapMarkers.updateMarkers();
         }
         updateLocalisationUI();
     }
@@ -132,14 +137,9 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
         mMap = googleMap;
         mMap.clear();
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.map_style));
-        LocationMarkerMockData mock = new LocationMarkerMockData();
-        setPointsOnMap(mock.markers);
+        //source = new LocationSource();
+        //mMap.setLocationSource(source);
         updateLocalisationUI();
-    }
-
-    public void GetLocations(LatLng position) {
-       JSONObject object = RequestsHandler.getLocationList(position, RANGE, this.getContext());
-       System.out.println(object);
     }
 
 

@@ -6,14 +6,15 @@ import androidx.annotation.NonNull;
 
 public class LocationSource implements com.google.android.gms.maps.LocationSource, LocationService.LocationUpdateListener {
 
-    public Location getLastLocation;
+    public Location lastLocation;
     LocationService listener;
-    public LocationSource(LocationService listener) {
-        this.listener = listener;
+    public LocationSource() {
+
     }
     private OnLocationChangedListener mListener;
     @Override
     public void activate(@NonNull OnLocationChangedListener onLocationChangedListener) {
+        System.out.println("CALLED");
         mListener = onLocationChangedListener;
     }
     @Override
@@ -23,7 +24,7 @@ public class LocationSource implements com.google.android.gms.maps.LocationSourc
 
     @Override
     public void onLocationChanged(Location location) {
-        getLastLocation = location;
+        lastLocation = location;
         if (mListener != null) {
             mListener.onLocationChanged(location);
         }
