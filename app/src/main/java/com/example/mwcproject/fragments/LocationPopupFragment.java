@@ -40,4 +40,14 @@ public class LocationPopupFragment extends Fragment {
         });
         title.setText(ID);
     }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+
+
+
+    }
 }

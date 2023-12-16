@@ -18,7 +18,7 @@ public class LocationUtils {
     }
 
     public static int GetRange() {
-        return 1000;
+        return 10000;
     }
 
 

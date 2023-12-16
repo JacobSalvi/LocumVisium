@@ -8,7 +8,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+
 import androidx.fragment.app.FragmentManager;
+
 import com.example.mwcproject.R;
 import com.example.mwcproject.fragments.LocationPopupFragment;
 import com.example.mwcproject.requests.RequestsHandler;
@@ -26,11 +29,12 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MapMarkers  {
     private static final int START_ZOOM = 15;
     public static MapMarkers instance;
-    private static final int RANGE = 20000;
     private final Context context;
     private final GoogleMap mMap;
     private final FragmentManager fragmentManager;
@@ -80,62 +84,51 @@ public class MapMarkers  {
 
     public static void updateMarkers() { instance.getLocations(instance.userLocation);}
 
-    private class FetchLocationsTask extends AsyncTask<LatLng, Void, JSONObject> {
-        private Exception exception = null;
+    private void fetchLocations(LatLng userPosition) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-        @Override
-        protected JSONObject doInBackground(LatLng... params) {
+        executor.execute(() -> {
             try {
-                return RequestsHandler.getLocationList(params[0], RANGE, context);
+                final JSONObject result = RequestsHandler.getLocationList(userPosition, LocationUtils.GetRange(), context);
+                handler.post(() -> {
+                    try {
+                        setPointsOnMap(result);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                });
             } catch (Exception e) {
-                exception = e;
-                return null;
+                handler.post(() -> System.out.println("Network request failed: " + e.getMessage()));
             }
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject result) {
-            if (exception != null) {
-                System.out.println("Network request failed: " + exception.getMessage());
-            }
-            if (result != null) {
-                System.out.println(result);
-            }
-        }
+        });
     }
 
-
-
-    public void getLocations(LatLng userPosition) {
+    private void getLocations(LatLng userPosition) {
         if (userPosition != null) {
-            mMap.clear();
-            new FetchLocationsTask().execute(userPosition);
+
+            fetchLocations(userPosition);
         } else {
             System.out.println("Null position");
         }
     }
 
-    public void setPointsOnMap(JSONObject res) throws JSONException {
-
-
+    private void setPointsOnMap(JSONObject res) throws JSONException {
+        mMap.clear();
         JSONArray data = res.getJSONArray("data");
         for (int i = 0; i < data.length(); i++) {
             JSONObject postData = data.getJSONObject(i);
-            String title = postData.getString("title");
-            String description = postData.getString("description");
-            String imagePath = postData.getString("path");
-
-        }
-
-
-        /*
-
-        HashMap<String, String> idToPath = new HashMap<>();
-        for (LocationMarker location : locations) {
-            Marker m = mMap.addMarker(location);
+            JSONObject location = postData.getJSONObject("location");
+            JSONArray coordinates = location.getJSONArray("coordinates");
+            double latitude = coordinates.getDouble(0);
+            double longitude = coordinates.getDouble(1);
+            LocationMarker locationMarker = new LocationMarker();
+            locationMarker.position(new LatLng(longitude, latitude));
+            Marker m = mMap.addMarker(locationMarker);
             assert m != null;
-            idToPath.put(m.getId(), location.getPath());
+            //idToPath.put(m.getId(), location.getPath());
         }
+
 
         mMap.setOnMarkerClickListener(marker -> {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(getMakerLocationsWithOffset(marker.getPosition()), START_ZOOM));
@@ -151,7 +144,7 @@ public class MapMarkers  {
                     .commit();
 
             return true; // or return false if you want the default behavior as well
-        }); */
+        });
     }
 
 
