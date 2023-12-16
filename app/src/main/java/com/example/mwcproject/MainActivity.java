@@ -10,7 +10,7 @@ import android.os.Bundle;
 
 import com.example.mwcproject.Permission.LocationPermission;
 import com.example.mwcproject.fragments.NavBarFragment.NavBarFragment;
-import com.example.mwcproject.fragments.MapsFragment;
+import com.example.mwcproject.fragments.Map.MapsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
