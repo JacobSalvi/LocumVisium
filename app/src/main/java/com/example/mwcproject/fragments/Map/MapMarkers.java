@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.mwcproject.R;
@@ -64,6 +65,17 @@ public class MapMarkers  {
         this.userLocation = userLocation;
         Intent intent = new Intent(context, LocationService.class);
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        // Your code here
+        // Repeat this runnable code block again every 30 seconds
+        Runnable runnableCode = new Runnable() {
+            @Override
+            public void run() {
+                // Your code here
+                updateMarkers();
+                // Repeat this runnable code block again every 30 seconds
+                handler.postDelayed(this, 5000);
+            }
+        };
         handler.post(runnableCode);
         instance = this;
     }
@@ -71,17 +83,7 @@ public class MapMarkers  {
     public void onLocationChange(Location location) {
         userLocation = LocationUtils.locationToLatLng(location); }
 
-    private Handler handler = new Handler();
-    private Runnable runnableCode = new Runnable() {
-        @Override
-        public void run() {
-            // Your code here
-            updateMarkers();
-            // Repeat this runnable code block again every 30 seconds
-            handler.postDelayed(this, 5000);
-        }
-    };
-
+    private final Handler handler = new Handler();
     public static void updateMarkers() { instance.getLocations(instance.userLocation);}
 
     private void fetchLocations(LatLng userPosition) {
@@ -126,16 +128,21 @@ public class MapMarkers  {
             locationMarker.position(new LatLng(longitude, latitude));
             Marker m = mMap.addMarker(locationMarker);
             assert m != null;
-            //idToPath.put(m.getId(), location.getPath());
         }
-
 
         mMap.setOnMarkerClickListener(marker -> {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(getMakerLocationsWithOffset(marker.getPosition()), START_ZOOM));
 
-            Bundle args = new Bundle();
-            args.putString("ID", marker.getTitle()); // Use the marker ID to get the path
 
+            Fragment existingFragment = fragmentManager.findFragmentById(R.id.fragment_location_popup);
+            if (existingFragment != null) {
+                fragmentManager.beginTransaction()
+                        .remove(existingFragment)
+                        .commit();
+            }
+            Bundle args = new Bundle();
+            args.putDouble("Lng", marker.getPosition().longitude);
+            args.putDouble("Lat", marker.getPosition().latitude);
             // Create a new instance of the fragment with the arguments
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_location_popup, LocationPopupFragment.class, args)

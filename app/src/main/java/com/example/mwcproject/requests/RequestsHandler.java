@@ -102,6 +102,30 @@ public class RequestsHandler {
         return bitmap;
     }
 
+
+
+    static public JSONObject getMarkerData(Context context, String lat, String longitude) throws IOException, JSONException {
+        HttpUrl mySearchUrl = new HttpUrl.Builder()
+                .scheme(PropertiesHandler.getProperty("scheme", context))
+                .host(PropertiesHandler.getProperty("host", context))
+                .port(PropertiesHandler.getPropertyInt("port", context))
+                .addPathSegment("location")
+                .addQueryParameter("latitude", lat)
+                .addQueryParameter("longitude", longitude)
+                .build();
+        Request request = new Request.Builder()
+                .url(mySearchUrl)
+                .method("GET", null)
+                .build();
+
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+        Response response = client.newCall(request).execute();
+
+        String resString = response.body().string();
+        return new JSONObject(resString);
+    }
+
     static public void sendImage(Bitmap bitmapImage,
                                  String title,
                                  String description,
