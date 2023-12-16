@@ -1,9 +1,14 @@
 package com.example.mwcproject.fragments;
 
+import static android.view.Surface.ROTATION_90;
+
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
+import androidx.camera.core.ImageInfo;
 import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
@@ -51,16 +57,30 @@ public class CameraFragment extends Fragment  {
         return root;
     }
 
+    private static Bitmap adjustImage(final ImageProxy image){
+        ImageInfo imf = image.getImageInfo();
+        int rotation = imf.getRotationDegrees();
+        return rotateImage(image.toBitmap(), rotation);
+    }
+
+    private static Bitmap rotateImage(Bitmap img, int degree)
+    {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        img.recycle();
+        return rotatedImg;
+    }
+
     private ImageCapture.OnImageCapturedCallback captureCallback(){
         return new ImageCapture.OnImageCapturedCallback() {
             @Override
             public void onCaptureSuccess(@NonNull ImageProxy image) {
                 super.onCaptureSuccess(image);
+                Bitmap imageB = adjustImage(image);
                 long startTime = System.nanoTime();
-                System.out.println("image is " + image);
                 ByteArrayOutputStream os = new ByteArrayOutputStream();
-                image.toBitmap().compress(Bitmap.CompressFormat.JPEG, 100, os);
-                System.out.println("Compression took:"+(System.nanoTime()-startTime)/1000000);
+                imageB.compress(Bitmap.CompressFormat.JPEG, 100, os);
                 byte[] bytes = os.toByteArray();
                 String encoded = Base64.encodeToString(bytes, Base64.DEFAULT);
                 Bundle bundle = new Bundle();
@@ -70,7 +90,6 @@ public class CameraFragment extends Fragment  {
                         .setReorderingAllowed(true)
                         .commit();
                 long endTime = System.nanoTime();
-                System.out.println("OnCaptureSuccess took:"+(endTime-startTime)/1000000);
             }
 
             @Override
@@ -102,7 +121,6 @@ public class CameraFragment extends Fragment  {
 
             bindPreview(cameraProvider);
         }, ContextCompat.getMainExecutor(this.getContext()));
-
     }
 
     private void bindPreview(@NonNull ProcessCameraProvider pv){
