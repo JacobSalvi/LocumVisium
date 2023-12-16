@@ -101,7 +101,7 @@ public class MapsFragment extends SupportMapFragment
                 : new LatLng(46.003601, 8.953620);
         if (mMap != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, START_ZOOM));
-            //mapMarkers = new MapMarkers(mMap, this.getContext(), this.getParentFragmentManager(), userLocation);
+            mapMarkers = new MapMarkers(mMap, this.getContext(), this.getParentFragmentManager(), userLocation);
             //MapMarkers.updateMarkers();
         }
         updateLocalisationUI();

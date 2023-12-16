@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -26,7 +27,7 @@ import java.util.List;
 public class MapMarkers  {
     private static final int START_ZOOM = 15;
     public static MapMarkers instance;
-    private static final int RANGE = 200;
+    private static final int RANGE = 20000;
     private final Context context;
     private final GoogleMap mMap;
     private final FragmentManager fragmentManager;
@@ -76,13 +77,36 @@ public class MapMarkers  {
 
     public static void updateMarkers() { instance.getLocations(instance.userLocation);}
 
+    private class FetchLocationsTask extends AsyncTask<LatLng, Void, JSONObject> {
+        private Exception exception = null;
+
+        @Override
+        protected JSONObject doInBackground(LatLng... params) {
+            try {
+                return RequestsHandler.getLocationList(params[0], RANGE, context);
+            } catch (Exception e) {
+                exception = e;
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject result) {
+            if (exception != null) {
+                System.out.println("Network request failed: " + exception.getMessage());
+            }
+            if (result != null) {
+                System.out.println(result);
+            }
+        }
+    }
+
 
 
     public void getLocations(LatLng userPosition) {
         if (userPosition != null) {
             mMap.clear();
-            JSONObject object = RequestsHandler.getLocationList(userPosition, RANGE, context);
-            System.out.println(object);
+            new FetchLocationsTask().execute(userPosition);
         } else {
             System.out.println("Null position");
         }
