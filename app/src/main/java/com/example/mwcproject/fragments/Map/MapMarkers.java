@@ -19,6 +19,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -112,7 +115,21 @@ public class MapMarkers  {
         }
     }
 
-    public void setPointsOnMap(List<LocationMarker> locations) {
+    public void setPointsOnMap(JSONObject res) throws JSONException {
+
+
+        JSONArray data = res.getJSONArray("data");
+        for (int i = 0; i < data.length(); i++) {
+            JSONObject postData = data.getJSONObject(i);
+            String title = postData.getString("title");
+            String description = postData.getString("description");
+            String imagePath = postData.getString("path");
+
+        }
+
+
+        /*
+
         HashMap<String, String> idToPath = new HashMap<>();
         for (LocationMarker location : locations) {
             Marker m = mMap.addMarker(location);
@@ -134,7 +151,7 @@ public class MapMarkers  {
                     .commit();
 
             return true; // or return false if you want the default behavior as well
-        });
+        }); */
     }
 
 

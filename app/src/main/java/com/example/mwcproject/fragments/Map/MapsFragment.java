@@ -94,8 +94,6 @@ public class MapsFragment extends SupportMapFragment
         }
     }
 
-
-
     public void updateMapLocationOnce(Location location) {
         LatLng userLocation = location != null ? LocationUtils.locationToLatLng(location)
                 : new LatLng(46.003601, 8.953620);
