@@ -24,15 +24,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.example.mwcproject.Permission.LocationPermission;
 import com.example.mwcproject.R;
 import com.example.mwcproject.databinding.PicturePreviewFragmentBinding;
 import com.example.mwcproject.requests.RequestsHandler;
 import com.example.mwcproject.services.Localisation.LocationService;
-import com.example.mwcproject.services.Localisation.LocationSource;
 import com.example.mwcproject.utils.LocationUtils;
 import com.google.android.material.textfield.TextInputEditText;
 
