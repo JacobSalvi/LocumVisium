@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
     <string name="map">map</string>
-    <string name="app_name">MwcProject</string>
+    <string name="app_name">Locum Visium</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="camera">camera</string>
     <string name="action_settings">action_settings</string>

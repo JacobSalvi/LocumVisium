@@ -2,8 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-
-        android:state_checked="true" android:color="@color/md_theme_dark_onPrimaryContainer"
         android:id="@+id/scroll_feed_btn"
         android:title=""
         android:icon="@drawable/map_fill"/>

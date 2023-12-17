@@ -10,6 +10,7 @@
 
     <com.google.android.material.bottomappbar.BottomAppBar
         app:backgroundTint="#00000000"
+        app:itemTextColor="@color/md_theme_dark_inverseSurface"
         android:alpha="1"
         android:id="@+id/bottomAppBar"
         android:layout_width="wrap_content"
@@ -25,6 +26,7 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             app:itemIconTint="#FFFFFF"
+            app:itemTextColor="@color/md_theme_dark_inverseSurface"
             app:backgroundTint="#00000000"
             android:id="@+id/bottomNavigationView"
             app:labelVisibilityMode="unlabeled"
