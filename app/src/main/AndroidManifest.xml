@@ -58,6 +58,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".fragments.SplashFragment"
+            android:launchMode="singleTop">
+            <!-- No intent-filter here, as it's not the entry point activity -->
+        </activity>
         <activity
             android:name=".fragments.Map.MapsFragment"
             android:exported="false"

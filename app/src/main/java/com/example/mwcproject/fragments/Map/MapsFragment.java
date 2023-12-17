@@ -17,11 +17,9 @@ import android.view.ViewGroup;
 import com.example.mwcproject.Permission.AbstractPermission;
 import com.example.mwcproject.Permission.LocationPermission;
 import com.example.mwcproject.R;
+import com.example.mwcproject.fragments.SplashFragment;
 import com.example.mwcproject.fragments.LocationPopupFragment;
-import com.example.mwcproject.requests.RequestsHandler;
 import com.example.mwcproject.services.Localisation.LocationService;
-import com.example.mwcproject.services.Localisation.LocationSource;
-import com.example.mwcproject.utils.LocationMarkerMockData;
 import com.example.mwcproject.utils.LocationUtils;
 import com.example.mwcproject.utils.LocationMarker;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,8 +29,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +44,7 @@ public class MapsFragment extends SupportMapFragment
     private LocationPermission permission;
 
     private MapMarkers mapMarkers;
-    private LocationSource source;
+
 
     private final ServiceConnection connection = new ServiceConnection() {
         @Override
@@ -100,7 +96,7 @@ public class MapsFragment extends SupportMapFragment
         if (mMap != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, START_ZOOM));
             mapMarkers = new MapMarkers(mMap, this.getContext(), this.getParentFragmentManager(), userLocation);
-            //MapMarkers.updateMarkers();
+
         }
         updateLocalisationUI();
     }
@@ -136,6 +132,7 @@ public class MapsFragment extends SupportMapFragment
         mMap.clear();
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.map_style));
         //source = new LocationSource();
+        SplashFragment.getInstance().startTransition();
         //mMap.setLocationSource(source);
         updateLocalisationUI();
     }
@@ -147,35 +144,10 @@ public class MapsFragment extends SupportMapFragment
     }
 
 
-    public void setPointsOnMap(List<LocationMarker> locations) {
-        HashMap<String, String> idToPath = new HashMap<>();
-        for (LocationMarker location : locations) {
-            Marker m = mMap.addMarker(location);
-            assert m != null;
-            idToPath.put(m.getId(), location.getPath());
-        }
-
-        mMap.setOnMarkerClickListener(marker -> {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(getMakerLocationsWithOffset(marker.getPosition()), START_ZOOM));
-
-            Bundle args = new Bundle();
-            args.putString("ID", marker.getTitle()); // Use the marker ID to get the path
-
-            // Create a new instance of the fragment with the arguments
-            getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_location_popup, LocationPopupFragment.class, args)
-                    .addToBackStack("Position photo")
-                    .setReorderingAllowed(true)
-                    .commit();
-
-            return true; // or return false if you want the default behavior as well
-        });
-    }
-
     private float offsetFromZoomLevel;
 
     private LatLng getMakerLocationsWithOffset(LatLng markerLocation) {
-        return  new LatLng(markerLocation.latitude - Y_OFFSET_MARKER, markerLocation.longitude);
+        return new LatLng(markerLocation.latitude - Y_OFFSET_MARKER, markerLocation.longitude);
     }
 
 }

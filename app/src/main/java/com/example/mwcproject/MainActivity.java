@@ -2,15 +2,18 @@ package com.example.mwcproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.example.mwcproject.Permission.LocationPermission;
 import com.example.mwcproject.fragments.NavBarFragment.NavBarFragment;
 import com.example.mwcproject.fragments.Map.MapsFragment;
+import com.example.mwcproject.fragments.SplashFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +28,12 @@ public class MainActivity extends AppCompatActivity {
         localisationPermission = LocationPermission.getInstance(this, this);
         requestLocationPermissions();
         requestCameraPermission();
+
         if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_splash_screen, SplashFragment.getInstance())
+                    .commit();
+
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container_map, MapsFragment.class, null)
                     .setReorderingAllowed(true)
@@ -36,8 +44,11 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
 
-        //View googleLogo = findViewById(R.id.fragment_container_map).findViewWithTag("GoogleWatermark");
-        //googleLogo.setVisibility(View.GONE);
+        // Force Dark Theme
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+
+
     }
 
     private void requestLocationPermissions() {
