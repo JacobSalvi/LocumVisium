@@ -1,4 +1,6 @@
 package com.example.mwcproject.fragments.NavBarFragment.CameraButton;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
@@ -6,6 +8,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -89,10 +93,8 @@ public class CameraButtonFragment extends Fragment {
         once = true;
         Drawable drawable = getResources().getDrawable(R.drawable.avd_button_to_cam, null);
         camButton.setImageDrawable(drawable);
-        if (drawable instanceof AnimatedVectorDrawable) {
-            AnimatedVectorDrawable animatedVectorDrawable = (AnimatedVectorDrawable) drawable;
-            animatedVectorDrawable.start();
-        }
+        AnimatedVectorDrawable animatedVectorDrawable = (AnimatedVectorDrawable) drawable;
+        animatedVectorDrawable.start();
     }
 
     private void OnPhotoClick() {
@@ -103,6 +105,9 @@ public class CameraButtonFragment extends Fragment {
             animatedVectorDrawable.start();
         }
     }
+
+
+
 
     public static void changeCamToButton() {
         instance.InternalChangeCamToButton();

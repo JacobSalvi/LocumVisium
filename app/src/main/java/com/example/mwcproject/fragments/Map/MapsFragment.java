@@ -45,7 +45,6 @@ public class MapsFragment extends SupportMapFragment
 
     private MapMarkers mapMarkers;
 
-
     private final ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -116,7 +115,7 @@ public class MapsFragment extends SupportMapFragment
         try {
             if (permission != null && permission.isEnabled()) {
                 mMap.setMyLocationEnabled(true);
-                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+                //mMap.getUiSettings().setMyLocationButtonEnabled(true);
             } else {
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
