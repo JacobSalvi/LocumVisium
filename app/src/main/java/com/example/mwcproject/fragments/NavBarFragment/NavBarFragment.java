@@ -9,12 +9,16 @@ import androidx.fragment.app.Fragment;
 import com.example.mwcproject.R;
 import com.example.mwcproject.databinding.NavBarFragmentBinding;
 import com.example.mwcproject.fragments.NavBarFragment.CameraButton.CameraButtonFragment;
+import com.example.mwcproject.fragments.NavBarFragment.CameraButton.CameraButtonListener;
 import com.example.mwcproject.fragments.ScrollFeed;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
-public class NavBarFragment extends Fragment {
+public class NavBarFragment extends Fragment implements CameraButtonListener {
 
     NavBarFragmentBinding binding;
+
+    BottomNavigationView navbar;
 
     @Nullable
     @Override
@@ -23,12 +27,15 @@ public class NavBarFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         binding = NavBarFragmentBinding.inflate(inflater, container, false);
 
+        //CameraButtonFragment cameraButtonFragment = new CameraButtonFragment();
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container_camera_btn, CameraButtonFragment.class, null)
                 .setReorderingAllowed(false)
                 .commit();
 
-        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+        navbar = binding.bottomNavigationView;
+        navbar.setSelectedItemId(R.id.map_btn);
+        navbar.setOnItemSelectedListener(item -> {
              if (item.getItemId() == R.id.map_btn) {
                  getParentFragmentManager().popBackStack();
              }else if(item.getItemId() == R.id.scroll_feed_btn){
@@ -41,18 +48,13 @@ public class NavBarFragment extends Fragment {
              }
             return true;
         });
-        /*
-        binding..setOnClickListener(view -> {
-
-        });*/
         return binding.getRoot().findViewById(R.id.down_bts);
     }
 
 
 
-    public NavBarFragment() {
-       // super(R.layout.down_button_fragment);
+    @Override
+    public void OnButtonClick() {
+        navbar.setSelectedItemId(R.id.placeholder);
     }
-
-
 }

@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                     .setReorderingAllowed(true)
                     .commit();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container_buttons, NavBarFragment.class, null)
+                    .replace(R.id.fragment_container_buttons, NavBarFragment.class, null, "NavBarFragment")
                     .setReorderingAllowed(true)
                     .commit();
         }

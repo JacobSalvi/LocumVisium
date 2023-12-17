@@ -51,7 +51,6 @@ public class CameraFragment extends Fragment  {
         ImageCapture.OnImageCapturedCallback cb = captureCallback();
         Context ctx = this.getContext();
         CameraButtonFragment.setCameraBtnCallback(() -> {
-            System.out.println("Alpaca");
             imageCapture.takePicture(ContextCompat.getMainExecutor(ctx),cb);
         });
         return root;
