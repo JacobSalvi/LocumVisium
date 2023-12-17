@@ -10,15 +10,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="8dp"
-        android:src="@drawable/avd_anim"
+        android:src="@drawable/avd_button_to_cam"
         app:backgroundTint="@color/md_theme_dark_primary"
         app:fabCustomSize="70dp"
         app:layout_anchorGravity="bottom|center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:maxImageSize="20dp"
+        app:maxImageSize="40dp"
         app:rippleColor="@color/md_theme_dark_onPrimary"
         app:shapeAppearanceOverlay="@style/FloatingActionButton"
         app:tint="@android:color/white"
-        />
+        android:contentDescription="d" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

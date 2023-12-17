@@ -36,6 +36,7 @@ public class NavBarFragment extends Fragment implements CameraButtonListener {
         navbar = binding.bottomNavigationView;
         navbar.setSelectedItemId(R.id.map_btn);
         navbar.setOnItemSelectedListener(item -> {
+             CameraButtonFragment.changeCamToButton();
              if (item.getItemId() == R.id.map_btn) {
                  getParentFragmentManager().popBackStack();
              }else if(item.getItemId() == R.id.scroll_feed_btn){

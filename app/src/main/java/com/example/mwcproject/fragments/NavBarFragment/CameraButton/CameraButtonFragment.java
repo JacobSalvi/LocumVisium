@@ -17,8 +17,6 @@ import com.example.mwcproject.databinding.CameraButtonFragmentBinding;
 import com.example.mwcproject.fragments.CameraFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class CameraButtonFragment extends Fragment {
@@ -27,10 +25,7 @@ public class CameraButtonFragment extends Fragment {
     public static CameraButtonFragment instance;
     boolean isCamera;
     CameraButtonFragmentBinding binding;
-
     FloatingActionButton camButton;
-
-
     CameraButtonListener callback;
     @Override
     public void onAttach(@NonNull Context context) {
@@ -44,9 +39,6 @@ public class CameraButtonFragment extends Fragment {
         }
     }
     public Optional<CameraButtonListener> buttonListener = Optional.empty();
-
-
-
 
 
     @Nullable
@@ -63,7 +55,10 @@ public class CameraButtonFragment extends Fragment {
         camButton = binding.getRoot().findViewById(R.id.camera_btn);
         binding.cameraBtn.setOnClickListener(view -> {
                     callback.OnButtonClick();
-                    buttonListener.ifPresent(CameraButtonListener::OnButtonClick);
+                    if (buttonListener.isPresent()) {
+                        buttonListener.ifPresent(CameraButtonListener::OnButtonClick);
+                        OnPhotoClick();
+                    }
                     if(!buttonListener.isPresent()) {
                         getParentFragmentManager().popBackStack();
                         getParentFragmentManager().beginTransaction()
@@ -71,7 +66,7 @@ public class CameraButtonFragment extends Fragment {
                                 .setReorderingAllowed(false)
                                 .addToBackStack("Camera") // if you want to add it to the back stack
                                 .commit();
-                        OnChangeButton();
+                        changeButtonToCam();
                     }
                 }
         );
@@ -88,14 +83,41 @@ public class CameraButtonFragment extends Fragment {
         }
     }
 
-    private void OnChangeButton() {
+    boolean once;
 
-        Drawable drawable = camButton.getDrawable();
+    private void changeButtonToCam() {
+        once = true;
+        Drawable drawable = getResources().getDrawable(R.drawable.avd_button_to_cam, null);
+        camButton.setImageDrawable(drawable);
         if (drawable instanceof AnimatedVectorDrawable) {
             AnimatedVectorDrawable animatedVectorDrawable = (AnimatedVectorDrawable) drawable;
             animatedVectorDrawable.start();
         }
+    }
 
+    private void OnPhotoClick() {
+        Drawable drawable = getResources().getDrawable(R.drawable.avd_cam_on_click, null);
+        camButton.setImageDrawable(drawable);
+        if (drawable instanceof AnimatedVectorDrawable) {
+            AnimatedVectorDrawable animatedVectorDrawable = (AnimatedVectorDrawable) drawable;
+            animatedVectorDrawable.start();
+        }
+    }
+
+    public static void changeCamToButton() {
+        instance.InternalChangeCamToButton();
+    }
+
+    private void InternalChangeCamToButton() {
+        if (once) {
+            Drawable drawable = getResources().getDrawable(R.drawable.avd_cam_to_button, null);
+            camButton.setImageDrawable(drawable);
+            if (drawable instanceof AnimatedVectorDrawable) {
+                AnimatedVectorDrawable animatedVectorDrawable = (AnimatedVectorDrawable) drawable;
+                animatedVectorDrawable.start();
+            }
+        }
+        once = false;
     }
 
 }
