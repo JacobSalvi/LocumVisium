@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.mwcproject.R;
 import com.example.mwcproject.databinding.LocationPopupFragmentBinding;
 import com.example.mwcproject.requests.RequestsHandler;
 import com.example.mwcproject.utils.LocationUtils;
@@ -40,6 +42,17 @@ public class LocationPopupFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = LocationPopupFragmentBinding.inflate(inflater, container, false);
+        View view = inflater.inflate(R.layout.location_popup_fragment, container, false);
+
+        // Set up touch listener to consume events
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+
+        });
+
         return binding.getRoot();
     }
     @Override
@@ -51,7 +64,17 @@ public class LocationPopupFragment extends Fragment {
         binding.closeBtn.setOnClickListener((x) ->  {
             getParentFragmentManager().popBackStack();
         });
+
+        // Set up touch listener to consume events
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Consume the touch event
+                return true;
+            }
+        });
     }
+
 
     private void fetchLocationData()  {
         ExecutorService executor = Executors.newSingleThreadExecutor();
