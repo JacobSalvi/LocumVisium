@@ -131,6 +131,10 @@ public class PicturePreview extends Fragment  {
             Fragment parent = getParentFragmentManager().findFragmentById(R.id.fragment_camera);
             getParentFragmentManager().beginTransaction().remove(parent).remove(this).commit();
         });
+
+        binding.back.setOnClickListener((view) ->{
+            getParentFragmentManager().popBackStack();
+        });
         setImageView(this.imageBitmap);
         location = LocationUtils.getLuganoLocation();
         return binding.getRoot();

@@ -2,38 +2,68 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/picture_preview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/picture_preview"
     tools:context="com.example.mwcproject.PicturePreview">
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/sendButton"
+        android:layout_width="90dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:text="POST"
+        android:textColor="@color/md_theme_dark_inverseSurface"
+        app:backgroundTint="@color/md_theme_dark_primary"
+        app:layout_anchorGravity="bottom|right|end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:layout_marginLeft="9dp"
+        android:src="@drawable/x"
+        app:backgroundTint="@color/md_theme_dark_primary"
+        app:fabCustomSize="40dp"
+        app:layout_anchorGravity="bottom|center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:maxImageSize="30dp"
+        app:rippleColor="@color/md_theme_dark_onPrimary"
+        app:shapeAppearanceOverlay="@style/FloatingActionButton"
+        app:tint="@android:color/white" />
 
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@android:color/background_dark">
-
-<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent">-->
+            android:background="@android:color/background_dark"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/preview_image"
-                android:layout_width="408dp"
-                android:layout_height="522dp"
-                android:layout_marginTop="97dp"
-
+                android:layout_width="match_parent"
+                android:layout_height="517dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -54,27 +84,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent">-->
-
-<!--                <HorizontalScrollView-->
-<!--                    android:id="@+id/tagsContainer"-->
-<!--                    android:layout_width="404dp"-->
-<!--                    android:layout_height="54dp"-->
-<!--                    android:layout_marginStart="3dp"-->
-<!--                    android:layout_marginTop="310dp"-->
-<!--                    android:layout_marginEnd="4dp"-->
-<!--                    android:layout_marginBottom="367dp"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent">-->
-
-<!--                </HorizontalScrollView>-->
-
-<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -94,7 +103,8 @@
                         android:id="@+id/titleInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Title"
+                        android:hint="@string/title"
+                        android:maxLength="15"
                         android:textColor="@color/md_theme_light_onPrimary" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -109,24 +119,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <Button
-                        android:id="@+id/sendButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Button"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.912"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.492" />
-
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/description"
-                        android:layout_width="263dp"
+                        android:layout_width="match_parent"
                         android:layout_height="108dp"
-                        android:hint="Description"
+                        android:hint="@string/description"
                         android:textColor="@color/md_theme_light_onPrimary"
                         tools:layout_editor_absoluteX="2dp"
                         tools:layout_editor_absoluteY="5dp" />

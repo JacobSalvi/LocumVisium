@@ -5,4 +5,8 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="camera">camera</string>
     <string name="action_settings">action_settings</string>
+    <string name="post">Post</string>
+    <string name="Post" />
+    <string name="title">Title</string>
+    <string name="description">Description</string>
 </resources>

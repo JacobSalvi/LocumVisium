@@ -1,5 +1,4 @@
 package com.example.mwcproject.fragments;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -7,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.camera.core.CameraSelector;
@@ -20,7 +18,6 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
 
 import com.example.mwcproject.R;
 import com.example.mwcproject.databinding.CameraFragmentBinding;
@@ -82,7 +79,7 @@ public class CameraFragment extends Fragment  {
                 Bundle bundle = new Bundle();
                 bundle.putString("image", encoded);
                 getParentFragmentManager().beginTransaction()
-                        .replace(R.id.picture_description, PicturePreview.class, bundle)
+                        .replace(R.id.fragment_camera_post, PicturePreview.class, bundle)
                         .setReorderingAllowed(true)
                         .commit();
                 long endTime = System.nanoTime();
@@ -126,7 +123,6 @@ public class CameraFragment extends Fragment  {
         preview.setSurfaceProvider(previewView.getSurfaceProvider());
         pv.bindToLifecycle(this, cs, preview, this.imageCapture);
     }
-
 
     @Override
     public void onDestroyView() {
