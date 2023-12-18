@@ -12,8 +12,8 @@ public class LocationUtils {
 
     public static Location getLuganoLocation() {
         Location location =  new Location("BASE");
-        location.setLongitude(46.011674);
-        location.setLatitude(8.96139);
+        location.setLongitude(8.96139);
+        location.setLatitude(46.011674);
         return location;
     }
 

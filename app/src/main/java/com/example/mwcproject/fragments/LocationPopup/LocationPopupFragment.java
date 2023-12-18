@@ -1,4 +1,4 @@
-package com.example.mwcproject.fragments;
+package com.example.mwcproject.fragments.LocationPopup;
 import static com.example.mwcproject.requests.RequestsHandler.StringToBitMap;
 
 import android.graphics.Bitmap;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.mwcproject.R;
 import com.example.mwcproject.databinding.LocationPopupFragmentBinding;
@@ -50,7 +51,6 @@ public class LocationPopupFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 return true;
             }
-
         });
 
         return binding.getRoot();

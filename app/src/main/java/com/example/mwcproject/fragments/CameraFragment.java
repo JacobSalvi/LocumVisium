@@ -1,14 +1,10 @@
 package com.example.mwcproject.fragments;
 
-import static android.view.Surface.ROTATION_90;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mwcproject.R;
 import com.example.mwcproject.databinding.CameraFragmentBinding;
+import com.example.mwcproject.PicturePreview;
 import com.example.mwcproject.fragments.NavBarFragment.CameraButton.CameraButtonFragment;
 import com.google.common.util.concurrent.ListenableFuture;
 

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -12,9 +11,10 @@ import android.os.Looper;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.mwcproject.R;
-import com.example.mwcproject.fragments.LocationPopupFragment;
+import com.example.mwcproject.fragments.LocationPopup.LocationPopupFragment;
 import com.example.mwcproject.requests.RequestsHandler;
 import com.example.mwcproject.services.Localisation.LocationService;
 import com.example.mwcproject.utils.LocationMarker;
@@ -28,8 +28,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -133,22 +131,24 @@ public class MapMarkers  {
         mMap.setOnMarkerClickListener(marker -> {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(getMakerLocationsWithOffset(marker.getPosition()), START_ZOOM));
 
-
             Fragment existingFragment = fragmentManager.findFragmentById(R.id.fragment_location_popup);
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+            transaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in, R.anim.slide_out);
+
             if (existingFragment != null) {
-                fragmentManager.beginTransaction()
-                        .remove(existingFragment)
-                        .commit();
+                transaction.remove(existingFragment);
             }
+
             Bundle args = new Bundle();
             args.putDouble("Lng", marker.getPosition().longitude);
             args.putDouble("Lat", marker.getPosition().latitude);
-            // Create a new instance of the fragment with the arguments
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_location_popup, LocationPopupFragment.class, args)
-                    .addToBackStack("Position photo")
-                    .setReorderingAllowed(true)
-                    .commit();
+
+            transaction.replace(R.id.fragment_location_popup, LocationPopupFragment.class, args);
+
+            transaction.addToBackStack("Position photo");
+
+            transaction.commit();
 
             return true; // or return false if you want the default behavior as well
         });

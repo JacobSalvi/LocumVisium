@@ -1,4 +1,4 @@
-package com.example.mwcproject.fragments;
+package com.example.mwcproject;
 
 import android.content.ComponentName;
 import android.content.Context;

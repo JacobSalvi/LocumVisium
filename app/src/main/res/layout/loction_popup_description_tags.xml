@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="hasellus blandit faucibus urna eleifend mattis. Curabitur id massa consequat,
+            auctor neque ut, lobortis velit. Pellentesque fringilla lorem urna, a porttitor turpis suscipit molestie
+            . Morbi gravida suscipit scelerisque. Curabitur vel urna purus. Etiam varius in magna eu rutrum.
+            Nunc molestie eget arcu in aliquam. Sed vehicula lectus et lectus tristique accumsan.
+            Integer eget finibus ante." />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tags: BAR RESTAURANT" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

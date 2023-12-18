@@ -36,7 +36,7 @@
                 android:layout_height="200dp"
                 android:maxHeight="20dp"
                 android:minHeight="20dp"
-                android:src="@drawable/ic_menu_camera" />
+                android:src="@drawable/background_loading_image" />
 
             <TextView
                 android:id="@+id/post_description"

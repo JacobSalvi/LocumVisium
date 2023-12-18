@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/picture_preview"
-    tools:context="com.example.mwcproject.fragments.PicturePreview">
+    tools:context="com.example.mwcproject.PicturePreview">
 
 
     <ScrollView

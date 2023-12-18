@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.mwcproject.fragments.LocationPopupFragment">
+    tools:context="com.example.mwcproject.fragments.LocationPopup.LocationPopupFragment">
+
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="430dp"
+
         android:background="@drawable/background_main"
         android:backgroundTint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -56,6 +58,12 @@
 
             </LinearLayout>
 
+            <!--
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/> -->
             <ImageView
                 android:id="@+id/image_view_popup_fragment"
 

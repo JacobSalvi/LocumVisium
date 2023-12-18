@@ -18,20 +18,14 @@ import com.example.mwcproject.Permission.AbstractPermission;
 import com.example.mwcproject.Permission.LocationPermission;
 import com.example.mwcproject.R;
 import com.example.mwcproject.fragments.SplashFragment;
-import com.example.mwcproject.fragments.LocationPopupFragment;
 import com.example.mwcproject.services.Localisation.LocationService;
 import com.example.mwcproject.utils.LocationUtils;
-import com.example.mwcproject.utils.LocationMarker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.Marker;
-
-import java.util.HashMap;
-import java.util.List;
 
 
 public class MapsFragment extends SupportMapFragment
@@ -136,13 +130,10 @@ public class MapsFragment extends SupportMapFragment
         updateLocalisationUI();
     }
 
-
     @Override
     public void onPermissionChange() {
         updateLocalisationUI();
     }
-
-
     private float offsetFromZoomLevel;
 
     private LatLng getMakerLocationsWithOffset(LatLng markerLocation) {
