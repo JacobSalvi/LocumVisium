@@ -10,8 +10,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="430dp"
-        android:layout_margin="20dp"
-        android:layout_marginBottom="72dp"
         android:background="@drawable/background_main"
         android:backgroundTint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,31 +17,32 @@
 
         <LinearLayout
 
-            android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="20dp"
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_marginBottom="20dp"
-                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:textSize="30sp"
-                    android:textColor="@color/md_theme_dark_inverseSurface"
                     android:id="@+id/title_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="My Title" />
+                    android:text="My Title"
+                    android:textColor="@color/md_theme_dark_inverseSurface"
+                    android:textSize="30sp" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/close_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="TODO"
                     android:elevation="8dp"
                     android:src="@drawable/x"
                     app:backgroundTint="@color/md_theme_dark_primary"
@@ -53,8 +52,7 @@
                     app:maxImageSize="30dp"
                     app:rippleColor="@color/md_theme_dark_onPrimary"
                     app:shapeAppearanceOverlay="@style/FloatingActionButton"
-                    app:tint="@android:color/white"
-                    android:contentDescription="TODO" />
+                    app:tint="@android:color/white" />
 
             </LinearLayout>
 
@@ -64,8 +62,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:src="@drawable/camera_fill"
-                android:contentDescription="TODO" />
+                android:contentDescription="TODO"
+                android:src="@drawable/camera_fill" />
         </LinearLayout>
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

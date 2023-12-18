@@ -82,7 +82,7 @@ public class ScrollFeed extends Fragment {
             Thread thread = new Thread(() -> {
                 try  {
                     // Your code goes here
-                    JSONObject res = RequestsHandler.getLocationList(userPosition, 20000, getContext());
+                    JSONObject res = RequestsHandler.getLocationList(userPosition, 200, getContext());
                     JSONArray data = res.getJSONArray("data");
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject postData = data.getJSONObject(i);
