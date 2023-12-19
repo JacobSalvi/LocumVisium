@@ -18,6 +18,7 @@ public class NavBarFragment extends Fragment implements CameraButtonListener {
 
     NavBarFragmentBinding binding;
 
+    public static NavBarFragment instance;
     BottomNavigationView navbar;
 
     @Nullable
@@ -49,9 +50,14 @@ public class NavBarFragment extends Fragment implements CameraButtonListener {
              }
             return true;
         });
+        instance = this;
         return binding.getRoot().findViewById(R.id.down_bts);
     }
 
+
+    public static void SetMapBtn() {
+        instance.navbar.setSelectedItemId(R.id.map_btn);
+    }
 
 
     @Override

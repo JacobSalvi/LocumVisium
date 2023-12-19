@@ -52,7 +52,6 @@ public class MapMarkers  {
                 }
             });
         }
-
         @Override
         public void onServiceDisconnected(ComponentName arg0) { isBound = false; }
     };
@@ -63,12 +62,9 @@ public class MapMarkers  {
         this.userLocation = userLocation;
         Intent intent = new Intent(context, LocationService.class);
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        // Your code here
-        // Repeat this runnable code block again every 30 seconds
         Runnable runnableCode = new Runnable() {
             @Override
             public void run() {
-                // Your code here
                 updateMarkers();
                 // Repeat this runnable code block again every 30 seconds
                 handler.postDelayed(this, 5000);
@@ -106,7 +102,6 @@ public class MapMarkers  {
 
     private void getLocations(LatLng userPosition) {
         if (userPosition != null) {
-
             fetchLocations(userPosition);
         } else {
             System.out.println("Null position");
@@ -150,7 +145,7 @@ public class MapMarkers  {
 
             transaction.commit();
 
-            return true; // or return false if you want the default behavior as well
+            return true;
         });
     }
 

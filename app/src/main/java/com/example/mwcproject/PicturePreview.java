@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Base64;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +26,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.mwcproject.R;
 import com.example.mwcproject.databinding.PicturePreviewFragmentBinding;
+import com.example.mwcproject.fragments.Map.MapMarkers;
+import com.example.mwcproject.fragments.NavBarFragment.CameraButton.CameraButtonFragment;
+import com.example.mwcproject.fragments.NavBarFragment.NavBarFragment;
 import com.example.mwcproject.requests.RequestsHandler;
 import com.example.mwcproject.services.Localisation.LocationService;
 import com.example.mwcproject.utils.LocationUtils;
@@ -125,15 +131,23 @@ public class PicturePreview extends Fragment  {
 
         TextInputEditText inputTitle = binding.getRoot().findViewById(R.id.titleInput);
         binding.sendButton.setOnClickListener((view)->{
+
             String desc = et.getText().toString();
             String title = inputTitle.getText().toString();
             RequestsHandler.sendImage(imageBitmap, title, desc, chosenTags, location.getLongitude(), location.getLatitude(), location.getProvider(),callback, ctx);
             Fragment parent = getParentFragmentManager().findFragmentById(R.id.fragment_camera);
             getParentFragmentManager().beginTransaction().remove(parent).remove(this).commit();
+            CameraButtonFragment.changeCamToButton();
+            MapMarkers.updateMarkers();
+            NavBarFragment.SetMapBtn();
+
         });
 
-        binding.back.setOnClickListener((view) ->{
-            getParentFragmentManager().popBackStack();
+        binding.backBtn.setOnClickListener((view) ->{
+            Fragment parent = getParentFragmentManager().findFragmentById(R.id.fragment_camera);
+            getParentFragmentManager().beginTransaction().remove(parent).remove(this).commit();
+            CameraButtonFragment.changeCamToButton();
+            NavBarFragment.SetMapBtn();
         });
         setImageView(this.imageBitmap);
         location = LocationUtils.getLuganoLocation();
@@ -146,19 +160,44 @@ public class PicturePreview extends Fragment  {
 
         List<String> availableTags = Arrays.asList("Bar", "Restaurant", "Event", "CozyPlace","Park");
 
-        for(String availableTag:  availableTags){
+        int themeColorMain = ContextCompat.getColor(getContext(), R.color.md_theme_dark_primary);
+
+        int themeColorBackground = ContextCompat.getColor(getContext(), R.color.md_theme_dark_surfaceVariant);
+
+
+        int paddingInDp = 10;
+        final float scale = this.getResources().getDisplayMetrics().density;
+        int paddingInPx = (int) (paddingInDp * scale + 0.5f);
+
+        for (String availableTag : availableTags) {
             Button b = new Button(this.getContext());
-            b.setOnClickListener((view)->{
-                if(!chosenTags.contains(availableTag)){
+            b.setBackgroundTintList(ColorStateList.valueOf(themeColorBackground));
+            b.setOnClickListener((view) -> {
+                if (!chosenTags.contains(availableTag)) {
                     chosenTags.add(availableTag);
-                    b.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
-                }else{
+                    b.setBackgroundTintList(ColorStateList.valueOf(themeColorMain));
+                } else {
                     chosenTags.remove(availableTag);
-                    b.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+                    b.setBackgroundTintList(ColorStateList.valueOf(themeColorBackground));
                 }
             });
             b.setText(availableTag);
+
+            b.setPadding(paddingInPx, paddingInPx, paddingInPx, paddingInPx);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,  // width
+                    LinearLayout.LayoutParams.WRAP_CONTENT   // height
+            );
+            b.setLayoutParams(params);
+
+            int margin = (int) (4 * this.getResources().getDisplayMetrics().density); // 4dp to pixels
+            params.setMargins(margin, margin, margin, margin);
+
+            b.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.tag_shape));
+
             ll.addView(b);
+
         }
     }
 

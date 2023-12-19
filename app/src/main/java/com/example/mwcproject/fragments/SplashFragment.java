@@ -17,7 +17,6 @@ public class SplashFragment extends Fragment {
     private static SplashFragment instance;
 
     public SplashFragment() {
-        // Required empty public constructor
     }
 
     public static SplashFragment getInstance() {
@@ -30,7 +29,6 @@ public class SplashFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.splash_screen_activity, container, false);
         splashLayout = view.findViewById(R.id.splash_layout);
         return view;
@@ -56,6 +54,5 @@ public class SplashFragment extends Fragment {
     }
 
     private void performTransitionAction() {
-        // Transition logic after animation
     }
 }
