@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.example.mwcproject.Permission.AbstractPermission;
 import com.example.mwcproject.Permission.LocationPermission;
 import com.example.mwcproject.R;
+import com.example.mwcproject.fragments.NavBarFragment.NavBarFragment;
 import com.example.mwcproject.fragments.SplashFragment;
 import com.example.mwcproject.services.Localisation.LocationService;
 import com.example.mwcproject.utils.LocationUtils;
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
@@ -88,8 +90,8 @@ public class MapsFragment extends SupportMapFragment
                 : new LatLng(46.003601, 8.953620);
         if (mMap != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, START_ZOOM));
-            mapMarkers = new MapMarkers(mMap, this.getContext(), this.getParentFragmentManager(), userLocation);
-
+            mapMarkers = new MapMarkers(mMap, this.getContext(), this.getParentFragmentManager());
+            NavBarFragment.ShowNavBar();
         }
         updateLocalisationUI();
     }
@@ -109,7 +111,7 @@ public class MapsFragment extends SupportMapFragment
         try {
             if (permission != null && permission.isEnabled()) {
                 mMap.setMyLocationEnabled(true);
-                //mMap.getUiSettings().setMyLocationButtonEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
             } else {
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);

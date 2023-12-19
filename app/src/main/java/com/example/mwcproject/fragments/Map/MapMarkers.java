@@ -55,27 +55,35 @@ public class MapMarkers  {
         @Override
         public void onServiceDisconnected(ComponentName arg0) { isBound = false; }
     };
-    public MapMarkers(GoogleMap map, Context context, FragmentManager fragmentManager,  LatLng userLocation) {
+
+
+    private boolean isRunnableRunning = false;
+    public MapMarkers(GoogleMap map, Context context, FragmentManager fragmentManager) {
         this.mMap = map;
         this.context = context;
         this.fragmentManager = fragmentManager;
-        this.userLocation = userLocation;
         Intent intent = new Intent(context, LocationService.class);
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        Runnable runnableCode = new Runnable() {
-            @Override
-            public void run() {
-                updateMarkers();
-                // Repeat this runnable code block again every 30 seconds
-                handler.postDelayed(this, 5000);
-            }
-        };
-        handler.post(runnableCode);
         instance = this;
     }
     LatLng userLocation;
     public void onLocationChange(Location location) {
-        userLocation = LocationUtils.locationToLatLng(location); }
+        userLocation = LocationUtils.locationToLatLng(location);
+
+
+        if (!isRunnableRunning) {
+            isRunnableRunning = true;
+            Runnable runnableCode = new Runnable() {
+                @Override
+                public void run() {
+                    updateMarkers();
+                    // Repeat this runnable code block again every 30 seconds
+                    handler.postDelayed(this, 5000);
+                }
+            };
+            handler.post(runnableCode);
+        }
+    }
 
     private final Handler handler = new Handler();
     public static void updateMarkers() { instance.getLocations(instance.userLocation);}

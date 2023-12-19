@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.mwcproject.R;
 import com.example.mwcproject.databinding.NavBarFragmentBinding;
 import com.example.mwcproject.fragments.NavBarFragment.CameraButton.CameraButtonFragment;
@@ -52,6 +55,33 @@ public class NavBarFragment extends Fragment implements CameraButtonListener {
         });
         instance = this;
         return binding.getRoot().findViewById(R.id.down_bts);
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        FragmentManager fragmentManager = getParentFragmentManager();
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.hide(this);
+        fragmentTransaction.commit();
+    }
+
+
+    public static void ShowNavBar() {
+        instance.showFragment();
+    }
+
+    public void showFragment() {
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(
+                R.anim.slide_in,
+                R.anim.slide_out
+        );
+        fragmentTransaction.show(this);
+        fragmentTransaction.commit();
     }
 
 

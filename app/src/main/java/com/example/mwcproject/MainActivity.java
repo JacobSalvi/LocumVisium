@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     @Override
     public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
@@ -58,10 +59,6 @@ public class MainActivity extends AppCompatActivity {
                     .setReorderingAllowed(true)
                     .commit();
         }
-
-
-        // Force Dark Theme
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
 
 
