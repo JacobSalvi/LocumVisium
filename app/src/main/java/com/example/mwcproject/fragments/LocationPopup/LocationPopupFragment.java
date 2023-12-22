@@ -123,7 +123,6 @@ public class LocationPopupFragment extends Fragment {
             JSONArray tags = data.optJSONArray("tags");
             String titleData = data.optString("title", "No title provided");
 
-            // Process tags if needed
             if (tags != null) {
                 for (int i = 0; i < tags.length(); i++) {
                     String tag = tags.getString(i);

@@ -49,7 +49,6 @@ public class PostFragment extends Fragment {
     private void loadImage(final String imagePath) {
         Thread thread = new Thread(() -> {
             try {
-                // Your code goes here
                 Bitmap image = RequestsHandler.getPicture(imagePath, getContext());
                 getActivity().runOnUiThread(() -> {
                     ImageView iv = binding.getRoot().findViewById(R.id.post_image);

@@ -14,7 +14,7 @@ public class DrawableImportFix {
 
     public static void main(String[] args) {
         String rootDirectoryPath = "/Users/msstudiohd/Library/CloudStorage/OneDrive-Personal/Scuola/Master/1 Semester/MWC - Mobile & Werable Computing/Project/app/src/main/res/drawable";
-        String replacementColor = "#FFFFFF"; // Replace with your desired color
+        String replacementColor = "#FFFFFF";
 
         File rootDirectory = new File(rootDirectoryPath);
         processDirectoryRecursively(rootDirectory, replacementColor);
