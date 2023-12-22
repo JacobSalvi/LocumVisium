@@ -22,7 +22,6 @@ public class PostFragment extends Fragment {
 
     public static PostFragment newInstance(final String title, final String description,
                                            final String imagePath) {
-
         PostFragment newPost = new PostFragment();
         Bundle b = new Bundle();
         b.putString("title", title);
@@ -35,7 +34,7 @@ public class PostFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding =  PostFragmentBinding.inflate(inflater, container, false);
+        binding = PostFragmentBinding.inflate(inflater, container, false);
         final String title = getArguments().getString("title");
         final String desc = getArguments().getString("description");
         final String imagePath = getArguments().getString("imagePath");
@@ -47,19 +46,21 @@ public class PostFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void loadImage(final String imagePath){
+    private void loadImage(final String imagePath) {
         Thread thread = new Thread(() -> {
-            try  {
+            try {
                 // Your code goes here
                 Bitmap image = RequestsHandler.getPicture(imagePath, getContext());
-                ImageView iv = binding.getRoot().findViewById(R.id.post_image);
-                iv.setImageBitmap(image);
+                getActivity().runOnUiThread(() -> {
+                    ImageView iv = binding.getRoot().findViewById(R.id.post_image);
+                    iv.setImageBitmap(image);
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
 
         thread.start();
-//            thread.join();
     }
 }
+

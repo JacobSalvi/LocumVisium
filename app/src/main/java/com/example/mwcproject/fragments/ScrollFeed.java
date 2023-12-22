@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
 public class ScrollFeed extends Fragment {
 
     private ScrollFeedBinding binding;
@@ -91,7 +92,7 @@ public class ScrollFeed extends Fragment {
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
-                    isFetchingLocationData = false;
+                    handler.post(() -> isFetchingLocationData = false);
                 }
             });
         }
@@ -99,13 +100,19 @@ public class ScrollFeed extends Fragment {
 
     private void updateUIWithPosts(JSONObject res) throws JSONException {
         JSONArray data = res.getJSONArray("data");
-        for (int i = 0; i < data.length(); i++) {
-            JSONObject postData = data.getJSONObject(i);
-            String title = postData.getString("title");
-            String description = postData.getString("description");
-            String imagePath = postData.getString("path");
-            addPostFragment(title, description, imagePath);
-        }
+        getActivity().runOnUiThread(() -> {
+            for (int i = 0; i < data.length(); i++) {
+                try {
+                    JSONObject postData = data.getJSONObject(i);
+                    String title = postData.getString("title");
+                    String description = postData.getString("description");
+                    String imagePath = postData.getString("path");
+                    addPostFragment(title, description, imagePath);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void addPostFragment(String title, String description, String imagePath) {
@@ -127,4 +134,5 @@ public class ScrollFeed extends Fragment {
         }
     }
 }
+
 
