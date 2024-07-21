@@ -21,8 +21,6 @@ Locum Visium is a community-based social media Android app designed to help user
 - Android Camera and GPS Integration
 - **Backend Server**: Developed using Python with Flask.
 
-   Here's the revised version of the installation and usage guide, with improved clarity and grammar:
-
 ## Python Flask Back-end  
 [Back-end git](https://github.com/alessiogiovagnini/locusVisium-back-end )
 
